@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import csv from "csvtojson";
 import { bindRawMeetupData } from "./SingleMeetingAnalysisUtils";
 import { SingleMeetupSummary } from "./SingleMeetupSummary";
+import MeetupMembersSummary from "./MeetupMembersSummary";
+
 const SingleMeetingAnalysisContainer = () => {
   const [rawMeetupData, setMeetupData] = useState("");
   const [attendees, setAttendees]: [any[], any] = useState([]);
@@ -31,6 +33,7 @@ const SingleMeetingAnalysisContainer = () => {
           Summarize Data
         </button>
         {attendees.length > 0 && <SingleMeetupSummary attendees={attendees} />}
+        {attendees.length > 0 && <MeetupMembersSummary attendees={attendees} />}
       </form>
     </div>
   );

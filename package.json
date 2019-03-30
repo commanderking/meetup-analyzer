@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "csvtojson": "^2.0.8",
+    "moment": "^2.24.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "typescript": "^3.3.4000"
