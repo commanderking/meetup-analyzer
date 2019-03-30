@@ -22,8 +22,6 @@ const SingleMeetingAnalysisContainer = () => {
       });
   };
 
-  console.log("csv", csv);
-
   return (
     <div>
       <h1>Meeting Statistics</h1>

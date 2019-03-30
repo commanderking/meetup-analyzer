@@ -14,7 +14,7 @@ type RawUserData = {
   Notes: string;
 };
 
-type BindedAttendeeData = {
+type AttendeeData = {
   userId: string | null;
   didAttend: boolean;
   didRSVP: boolean;
@@ -36,7 +36,7 @@ const didRSVP = (user: RawUserData) => {
 
 export const bindRawMeetupData = (
   meetupData: RawUserData[]
-): BindedAttendeeData[] => {
+): AttendeeData[] => {
   return meetupData.map((user: RawUserData) => {
     return {
       userId:
@@ -56,7 +56,6 @@ export const bindRawMeetupData = (
 const eventDate = new Date("03/27/2019");
 
 type RelativeMeetupRegistrationDates = {
-  onDayOfEventSignup: number;
   pastThirtyDays: number;
   pastSixMonths: number;
   pastYear: number;
@@ -66,18 +65,13 @@ type RelativeMeetupRegistrationDates = {
 
 const getRelativeRegistrationDate = (
   acc: RelativeMeetupRegistrationDates,
-  attendee: BindedAttendeeData
+  attendee: AttendeeData
 ) => {
   const { didAttend, dateJoinedGroup, didRSVP } = attendee;
   if (!dateJoinedGroup) {
     return acc;
   }
-  if (moment(dateJoinedGroup).isSame(eventDate, "day")) {
-    return {
-      ...acc,
-      onDayOfEventSignup: acc.onDayOfEventSignup += 1
-    };
-  }
+
   if (
     moment(dateJoinedGroup).isBetween(
       moment(eventDate).subtract(30, "days"),
@@ -86,7 +80,7 @@ const getRelativeRegistrationDate = (
   ) {
     return {
       ...acc,
-      pastThirtyDays: acc.pastThirtyDays += 1
+      pastThirtyDays: acc.pastThirtyDays + 1
     };
   }
 
@@ -95,7 +89,7 @@ const getRelativeRegistrationDate = (
   ) {
     return {
       ...acc,
-      pastYear: acc.pastSixMonths += 1
+      pastSixMonths: acc.pastSixMonths + 1
     };
   }
 
@@ -107,7 +101,7 @@ const getRelativeRegistrationDate = (
   ) {
     return {
       ...acc,
-      pastYear: acc.pastYear += 1
+      pastYear: acc.pastYear + 1
     };
   }
 
@@ -119,27 +113,30 @@ const getRelativeRegistrationDate = (
   ) {
     return {
       ...acc,
-      pastTwoYears: acc.pastTwoYears += 1
+      pastTwoYears: acc.pastTwoYears + 1
     };
   }
 
   return {
     ...acc,
-    overTwoYearsAgo: acc.overTwoYearsAgo += 1
+    overTwoYearsAgo: acc.overTwoYearsAgo + 1
   };
 };
 
+const isMeetupGroupMemberAttendee = (attendee: AttendeeData) => {
+  return attendee.didAttend && attendee.dateJoinedGroup && attendee.didRSVP;
+};
+
 export const getMeetupMembersWhoAttendedSummary = (
-  attendees: BindedAttendeeData[]
+  attendees: AttendeeData[]
 ): RelativeMeetupRegistrationDates => {
   return attendees
-    .filter(attendee => attendee.didAttend && attendee.dateJoinedGroup)
+    .filter(attendee => isMeetupGroupMemberAttendee(attendee))
     .reduce(
       (acc, currentAttendee) => {
         return getRelativeRegistrationDate(acc, currentAttendee);
       },
       {
-        onDayOfEventSignup: 0,
         pastThirtyDays: 0,
         pastSixMonths: 0,
         pastYear: 0,
@@ -149,13 +146,11 @@ export const getMeetupMembersWhoAttendedSummary = (
     );
 };
 
-export const getSummaryData = (attendees: BindedAttendeeData[]) => {
+export const getSummaryData = (attendees: AttendeeData[]) => {
   return attendees.reduce(
     (acc, currentAttendee) => {
       const { didRSVP, didAttend, rsvpDate, dateJoinedGroup } = currentAttendee;
 
-      console.log("rsvpDate", rsvpDate);
-      console.log("dateJoinedGroup");
       return {
         ...acc,
         totalCount: acc.totalCount + 1,
@@ -163,14 +158,14 @@ export const getSummaryData = (attendees: BindedAttendeeData[]) => {
         numberAttendees: didAttend
           ? acc.numberAttendees + 1
           : acc.numberAttendees,
-        attendeesWhoRSVPd:
-          didRSVP && didAttend
-            ? acc.attendeesWhoRSVPd + 1
-            : acc.attendeesWhoRSVPd,
+        attendeesWhoRSVPd: isMeetupGroupMemberAttendee(currentAttendee)
+          ? acc.attendeesWhoRSVPd + 1
+          : acc.attendeesWhoRSVPd,
         attendeesWhoJoinedMeetupForEvent:
           acc.attendeesWhoJoinedMeetupForEvent +
           (rsvpDate &&
           dateJoinedGroup &&
+          didAttend &&
           moment(rsvpDate).isSame(dateJoinedGroup, "day")
             ? 1
             : 0)

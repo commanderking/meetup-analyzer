@@ -9,7 +9,6 @@ export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
     attendeesWhoRSVPd,
     attendeesWhoJoinedMeetupForEvent
   } = summary;
-  console.log("summary", summary);
   return (
     <div>
       <h2>Summary of Meetup</h2>
