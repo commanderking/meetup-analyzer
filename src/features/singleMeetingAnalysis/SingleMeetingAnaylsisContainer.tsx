@@ -8,6 +8,7 @@ import { css, jsx } from "@emotion/core";
 
 const SingleMeetingAnalysisContainer = () => {
   const [rawMeetupData, setMeetupData] = useState("");
+  const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [attendees, setAttendees]: [any[], any] = useState([]);
 
@@ -17,6 +18,10 @@ const SingleMeetingAnalysisContainer = () => {
 
   const handleEventDateChange = (event: any) => {
     setEventDate(event.target.value);
+  };
+
+  const handleEventNameChange = (event: any) => {
+    setEventName(event.target.value);
   };
 
   const submitJSON = (event: any) => {
@@ -39,12 +44,23 @@ const SingleMeetingAnalysisContainer = () => {
               <label>
                 Event Date:{" "}
                 <input
+                  value={eventName}
+                  placeholder="UX in Ed Tech"
+                  onChange={handleEventNameChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                Event Date:{" "}
+                <input
                   value={eventDate}
                   placeholder="MM/DD/YYYY"
                   onChange={handleEventDateChange}
                 />
               </label>
             </div>
+
             <div>
               <label>
                 Event Attendance Data:{" "}
@@ -60,7 +76,9 @@ const SingleMeetingAnalysisContainer = () => {
       )}
       {attendees.length > 0 && (
         <React.Fragment>
-          <h1>Meeting Statistics</h1>
+          <h1>
+            Meeting Statistics for {eventName} on {eventDate}
+          </h1>
           <button
             onClick={() => {
               setAttendees([]);

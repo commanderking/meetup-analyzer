@@ -1,7 +1,9 @@
 import React from "react";
 import { getMeetupMembersWhoAttendedSummary } from "./SingleMeetingAnalysisUtils";
-import { PieChart, Pie, Legend, Cell } from "recharts";
+import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from "recharts";
 import _ from "lodash";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red"];
 
@@ -34,28 +36,30 @@ const MeetupMemberSummary = ({
   return (
     <div>
       <h2>Attendees Joined This Meetup Within...</h2>
-      <PieChart width={650} height={250}>
-        <Pie
-          data={pieChartData}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          innerRadius={0}
-          outerRadius={80}
-          label
-        >
-          {pieChartData.map((entry, index) => {
-            return (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            );
-          })}
-        </Pie>
-        <Legend layout="horizontal" />
-      </PieChart>
+      <ResponsiveContainer width="100%" height={250}>
+        <PieChart>
+          <Pie
+            data={pieChartData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            innerRadius={0}
+            outerRadius={80}
+            label
+          >
+            {pieChartData.map((entry, index) => {
+              return (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              );
+            })}
+          </Pie>
+          <Legend layout="horizontal" />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 };
