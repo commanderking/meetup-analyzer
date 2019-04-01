@@ -1,6 +1,6 @@
 import React from "react";
 import { getMeetupMembersWhoAttendedSummary } from "./SingleMeetingAnalysisUtils";
-import { PieChart, Pie, Tooltip, Legend, Cell } from "recharts";
+import { PieChart, Pie, Legend, Cell } from "recharts";
 import _ from "lodash";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red"];
@@ -13,8 +13,15 @@ const CategoryDisplayNames = {
   overTwoYearsAgo: "2+ years ago"
 };
 
-const MeetupMemberSummary = ({ attendees }: { attendees: any[] }) => {
-  const summary = getMeetupMembersWhoAttendedSummary(attendees);
+const MeetupMemberSummary = ({
+  attendees,
+  eventDate
+}: {
+  attendees: any[];
+  eventDate: string;
+}) => {
+  console.log("react", React);
+  const summary = getMeetupMembersWhoAttendedSummary(attendees, eventDate);
   const keys = _.keys(summary);
 
   const pieChartData = _.map(keys, key => ({

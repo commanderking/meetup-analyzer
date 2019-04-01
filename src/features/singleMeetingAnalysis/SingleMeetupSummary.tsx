@@ -1,5 +1,7 @@
 import React from "react";
 import { getSummaryData } from "./SingleMeetingAnalysisUtils";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 
 export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
   const summary = getSummaryData(attendees);
@@ -12,19 +14,26 @@ export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
   return (
     <div>
       <h2>Summary of Meetup</h2>
-      <ul>
-        <li>RSVPs: {numberRSVPs}</li>
-        <li>Total Attendees: {numberAttendees}</li>
-        <li>Attendees who RSVP'd: {attendeesWhoRSVPd}</li>
-        <li>
-          Attendees who joined group and signed up for event on same day:{" "}
-          {attendeesWhoJoinedMeetupForEvent}
-        </li>
-        <li>
-          Percentage of RSVPs that Attended:
-          {`${Math.round((attendeesWhoRSVPd / numberRSVPs) * 100)}%`}
-        </li>
-      </ul>
+      <div
+        css={css`
+          text-align: left;
+          margin: auto;
+          width: 500px;
+          display: grid;
+          grid-template-columns: 5fr 1fr;
+        `}
+      >
+        <div>RSVPs</div>
+        <div> {numberRSVPs}</div>
+        <div>Total Attendees</div>
+        <div> {numberAttendees}</div>
+        <div>Attendees who RSVP'd</div>
+        <div> {attendeesWhoRSVPd}</div>
+        <div>Attendees who joined group / signed up for event on same day</div>
+        <div>{attendeesWhoJoinedMeetupForEvent}</div>
+        <div>Percentage of RSVPs that Attended</div>
+        <div>{`${Math.round((attendeesWhoRSVPd / numberRSVPs) * 100)}%`}</div>
+      </div>
     </div>
   );
 };

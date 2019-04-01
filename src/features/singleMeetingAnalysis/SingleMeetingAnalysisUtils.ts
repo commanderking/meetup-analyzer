@@ -71,7 +71,8 @@ const registeredWithinTwoYearsOfEvent = (
 
 const getRelativeRegistrationDate = (
   acc: RelativeMeetupRegistrationDates,
-  attendee: AttendeeData
+  attendee: AttendeeData,
+  eventDate: Date
 ) => {
   const { dateJoinedGroup } = attendee;
   if (!dateJoinedGroup) {
@@ -126,13 +127,19 @@ const isAttendeeWhoJoinedMeetupForEvent = (attendee: AttendeeData): boolean => {
 };
 
 export const getMeetupMembersWhoAttendedSummary = (
-  attendees: AttendeeData[]
+  attendees: AttendeeData[],
+  eventDate: string
 ): RelativeMeetupRegistrationDates => {
+  console.log("eventDate", new Date(eventDate));
   return attendees
     .filter(attendee => isMeetupGroupMemberAttendee(attendee))
     .reduce(
       (acc, currentAttendee) => {
-        return getRelativeRegistrationDate(acc, currentAttendee);
+        return getRelativeRegistrationDate(
+          acc,
+          currentAttendee,
+          new Date(eventDate)
+        );
       },
       {
         pastThirtyDays: 0,
