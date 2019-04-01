@@ -1,43 +1,26 @@
 import moment from "moment";
 
-type RawUserData = {
-  Name: string;
-  Attendance: string;
-  "User ID": string;
-  Title: string;
-  "Event Host": string;
-  RSVP: string;
-  Guests: string;
-  "RSVPed on": string;
-  "Joined Group on": string;
-  "URL of Member Profile": string;
-  Notes: string;
-};
-
-type AttendeeData = {
-  userId: string | null;
-  didAttend: boolean;
-  didRSVP: boolean;
-  title: string;
-  eventHost: string;
-  rsvpDate: Date | null;
-  dateJoinedGroup: Date | null;
-};
+import {
+  RawAttendeeData,
+  AttendeeData,
+  RelativeMeetupRegistrationDates
+} from "./SingleMeetupTypes";
 
 const defaultAttendedMarker = "Y";
+const eventDate = new Date("03/27/2019");
 
-const attendedMeetup = (user: RawUserData) => {
+const attendedMeetup = (user: RawAttendeeData) => {
   return user.Attendance === defaultAttendedMarker ? true : false;
 };
 
-const didRSVP = (user: RawUserData) => {
+const didRSVP = (user: RawAttendeeData) => {
   return user.RSVP === "Yes" ? true : false;
 };
 
 export const bindRawMeetupData = (
-  meetupData: RawUserData[]
+  meetupData: RawAttendeeData[]
 ): AttendeeData[] => {
-  return meetupData.map((user: RawUserData) => {
+  return meetupData.map((user: RawAttendeeData) => {
     return {
       userId:
         user["User ID"] !== "" ? user["User ID"].replace("user ", "") : null,
@@ -53,64 +36,70 @@ export const bindRawMeetupData = (
   });
 };
 
-const eventDate = new Date("03/27/2019");
+const registeredWithin30DaysOfEvent = (
+  dateJoined: Date,
+  eventDate: Date
+): boolean =>
+  moment(dateJoined).isBetween(
+    moment(eventDate).subtract(30, "days"),
+    moment(eventDate)
+  );
 
-type RelativeMeetupRegistrationDates = {
-  pastThirtyDays: number;
-  pastSixMonths: number;
-  pastYear: number;
-  pastTwoYears: number;
-  overTwoYearsAgo: number;
-};
+const registeredWithinPastSixMonthsOfEvent = (
+  dateJoined: Date,
+  eventDate: Date
+): boolean =>
+  moment(dateJoined).isBetween(moment(eventDate).subtract(180, "days"));
+
+const registeredWithinPastYearOfEvent = (
+  dateJoined: Date,
+  eventDate: Date
+): boolean =>
+  moment(dateJoined).isBetween(
+    moment(eventDate).subtract(365, "days"),
+    moment(eventDate)
+  );
+
+const registeredWithinTwoYearsOfEvent = (
+  dateJoined: Date,
+  eventDate: Date
+): boolean =>
+  moment(dateJoined).isBetween(
+    moment(eventDate).subtract(710, "days"),
+    moment(eventDate)
+  );
 
 const getRelativeRegistrationDate = (
   acc: RelativeMeetupRegistrationDates,
   attendee: AttendeeData
 ) => {
-  const { didAttend, dateJoinedGroup, didRSVP } = attendee;
+  const { dateJoinedGroup } = attendee;
   if (!dateJoinedGroup) {
     return acc;
   }
 
-  if (
-    moment(dateJoinedGroup).isBetween(
-      moment(eventDate).subtract(30, "days"),
-      moment(eventDate)
-    )
-  ) {
+  if (registeredWithin30DaysOfEvent(dateJoinedGroup, eventDate)) {
     return {
       ...acc,
       pastThirtyDays: acc.pastThirtyDays + 1
     };
   }
 
-  if (
-    moment(dateJoinedGroup).isBetween(moment(eventDate).subtract(180, "days"))
-  ) {
+  if (registeredWithinPastSixMonthsOfEvent(dateJoinedGroup, eventDate)) {
     return {
       ...acc,
       pastSixMonths: acc.pastSixMonths + 1
     };
   }
 
-  if (
-    moment(dateJoinedGroup).isBetween(
-      moment(eventDate).subtract(365, "days"),
-      moment(eventDate)
-    )
-  ) {
+  if (registeredWithinPastYearOfEvent(dateJoinedGroup, eventDate)) {
     return {
       ...acc,
       pastYear: acc.pastYear + 1
     };
   }
 
-  if (
-    moment(dateJoinedGroup).isBetween(
-      moment(eventDate).subtract(710, "days"),
-      moment(eventDate)
-    )
-  ) {
+  if (registeredWithinTwoYearsOfEvent(dateJoinedGroup, eventDate)) {
     return {
       ...acc,
       pastTwoYears: acc.pastTwoYears + 1
@@ -123,8 +112,17 @@ const getRelativeRegistrationDate = (
   };
 };
 
-const isMeetupGroupMemberAttendee = (attendee: AttendeeData) => {
-  return attendee.didAttend && attendee.dateJoinedGroup && attendee.didRSVP;
+const isMeetupGroupMemberAttendee = (attendee: AttendeeData): boolean =>
+  Boolean(attendee.didAttend && attendee.dateJoinedGroup && attendee.didRSVP);
+
+const isAttendeeWhoJoinedMeetupForEvent = (attendee: AttendeeData): boolean => {
+  const { rsvpDate, dateJoinedGroup, didAttend } = attendee;
+  return Boolean(
+    rsvpDate &&
+      dateJoinedGroup &&
+      didAttend &&
+      moment(rsvpDate).isSame(dateJoinedGroup, "day")
+  );
 };
 
 export const getMeetupMembersWhoAttendedSummary = (
@@ -149,26 +147,19 @@ export const getMeetupMembersWhoAttendedSummary = (
 export const getSummaryData = (attendees: AttendeeData[]) => {
   return attendees.reduce(
     (acc, currentAttendee) => {
-      const { didRSVP, didAttend, rsvpDate, dateJoinedGroup } = currentAttendee;
+      const { didRSVP, didAttend } = currentAttendee;
 
       return {
         ...acc,
         totalCount: acc.totalCount + 1,
         numberRSVPs: acc.numberRSVPs + (didRSVP ? 1 : 0),
-        numberAttendees: didAttend
-          ? acc.numberAttendees + 1
-          : acc.numberAttendees,
-        attendeesWhoRSVPd: isMeetupGroupMemberAttendee(currentAttendee)
-          ? acc.attendeesWhoRSVPd + 1
-          : acc.attendeesWhoRSVPd,
+        numberAttendees: acc.numberAttendees + (didAttend ? 1 : 0),
+        attendeesWhoRSVPd:
+          acc.attendeesWhoRSVPd +
+          (isMeetupGroupMemberAttendee(currentAttendee) ? 1 : 0),
         attendeesWhoJoinedMeetupForEvent:
           acc.attendeesWhoJoinedMeetupForEvent +
-          (rsvpDate &&
-          dateJoinedGroup &&
-          didAttend &&
-          moment(rsvpDate).isSame(dateJoinedGroup, "day")
-            ? 1
-            : 0)
+          (isAttendeeWhoJoinedMeetupForEvent(currentAttendee) ? 1 : 0)
       };
     },
     {
