@@ -1,78 +1,27 @@
 import React, { useState } from "react";
-import csv from "csvtojson";
-import { bindRawMeetupData } from "./SingleMeetingAnalysisUtils";
 import { SingleMeetupSummary } from "./SingleMeetupSummary";
 import MeetupMembersSummary from "./MeetupMembersSummary";
+import SingleMeetingForm from "./components/SingleMeetingForm";
+import { AttendeeData } from "./SingleMeetupTypes";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
 const SingleMeetingAnalysisContainer = () => {
-  const [rawMeetupData, setMeetupData] = useState("");
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
-  const [attendees, setAttendees]: [any[], any] = useState([]);
-
-  const handleChange = (event: any) => {
-    setMeetupData(event.target.value);
-  };
-
-  const handleEventDateChange = (event: any) => {
-    setEventDate(event.target.value);
-  };
-
-  const handleEventNameChange = (event: any) => {
-    setEventName(event.target.value);
-  };
-
-  const submitJSON = (event: any) => {
-    event.preventDefault();
-    csv()
-      .fromString(rawMeetupData)
-      .then(result => {
-        const bindedData = bindRawMeetupData(result);
-        setAttendees(bindedData);
-      });
-  };
+  const [attendees, setAttendees]: [AttendeeData[], any] = useState([]);
 
   return (
     <div>
       {attendees.length === 0 && (
-        <div>
-          <h1>Enter Meetup Attendance CSV Data</h1>
-          <form>
-            <div>
-              <label>
-                Event Date:{" "}
-                <input
-                  value={eventName}
-                  placeholder="UX in Ed Tech"
-                  onChange={handleEventNameChange}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Event Date:{" "}
-                <input
-                  value={eventDate}
-                  placeholder="MM/DD/YYYY"
-                  onChange={handleEventDateChange}
-                />
-              </label>
-            </div>
-
-            <div>
-              <label>
-                Event Attendance Data:{" "}
-                <textarea value={rawMeetupData} onChange={handleChange} />
-              </label>
-              <div />
-              <button type="submit" onClick={submitJSON}>
-                Summarize Data
-              </button>
-            </div>
-          </form>
-        </div>
+        <SingleMeetingForm
+          attendees={attendees}
+          setAttendees={setAttendees}
+          eventName={eventName}
+          eventDate={eventDate}
+          setEventName={setEventName}
+          setEventDate={setEventDate}
+        />
       )}
       {attendees.length > 0 && (
         <React.Fragment>

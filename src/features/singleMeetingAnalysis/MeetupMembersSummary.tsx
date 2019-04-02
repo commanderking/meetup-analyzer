@@ -2,8 +2,6 @@ import React from "react";
 import { getMeetupMembersWhoAttendedSummary } from "./SingleMeetingAnalysisUtils";
 import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from "recharts";
 import _ from "lodash";
-/** @jsx jsx */
-import { css, jsx } from "@emotion/core";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red"];
 
