@@ -1,5 +1,4 @@
 import React from "react";
-import { getMeetupMembersWhoAttendedSummary } from "./SingleMeetingAnalysisUtils";
 import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from "recharts";
 import _ from "lodash";
 
@@ -14,26 +13,25 @@ const CategoryDisplayNames = {
 };
 
 const MeetupMemberSummary = ({
-  attendees,
-  eventDate
+  attendeesByDate,
+  title
 }: {
-  attendees: any[];
-  eventDate: string;
+  attendeesByDate: any;
+  title: string;
 }) => {
   console.log("react", React);
-  const summary = getMeetupMembersWhoAttendedSummary(attendees, eventDate);
-  const keys = _.keys(summary);
+  const keys = _.keys(attendeesByDate);
 
   const pieChartData = _.map(keys, key => ({
     // @ts-ignore - need to type key to ensure it exists in summary?
     name: CategoryDisplayNames[key],
     // @ts-ignore - need to type key to ensure it exists in summary?
-    value: summary[key]
+    value: attendeesByDate[key]
   }));
 
   return (
     <div>
-      <h2>Attendees Joined This Meetup Within...</h2>
+      <h2>{title}</h2>
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>
           <Pie

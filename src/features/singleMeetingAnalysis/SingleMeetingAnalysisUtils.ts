@@ -130,7 +130,6 @@ export const getMeetupMembersWhoAttendedSummary = (
   attendees: AttendeeData[],
   eventDate: string
 ): RelativeMeetupRegistrationDates => {
-  console.log("eventDate", new Date(eventDate));
   return attendees
     .filter(attendee => isMeetupGroupMemberAttendee(attendee))
     .reduce(
@@ -141,6 +140,25 @@ export const getMeetupMembersWhoAttendedSummary = (
           new Date(eventDate)
         );
       },
+      {
+        pastThirtyDays: 0,
+        pastSixMonths: 0,
+        pastYear: 0,
+        pastTwoYears: 0,
+        overTwoYearsAgo: 0
+      }
+    );
+};
+
+export const getMeetupMembersWhoRSVPd = (
+  attendees: AttendeeData[],
+  eventDate: string
+): RelativeMeetupRegistrationDates => {
+  return attendees
+    .filter(attendee => Boolean(attendee.didRSVP))
+    .reduce(
+      (acc, currentAttendee) =>
+        getRelativeRegistrationDate(acc, currentAttendee, new Date(eventDate)),
       {
         pastThirtyDays: 0,
         pastSixMonths: 0,

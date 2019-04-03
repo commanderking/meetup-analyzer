@@ -3,13 +3,25 @@ import { SingleMeetupSummary } from "./SingleMeetupSummary";
 import MeetupMembersSummary from "./MeetupMembersSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
+import MeetupMembersPercentageSummary from "./components/MeetupMembersPercentageSummary";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import {
+  getMeetupMembersWhoAttendedSummary,
+  getMeetupMembersWhoRSVPd
+} from "./SingleMeetingAnalysisUtils";
 
 const SingleMeetingAnalysisContainer = () => {
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [attendees, setAttendees]: [AttendeeData[], any] = useState([]);
+
+  const meetupMembersWhoAttended = getMeetupMembersWhoAttendedSummary(
+    attendees,
+    eventDate
+  );
+
+  const meetupMembersWhoRSVPd = getMeetupMembersWhoRSVPd(attendees, eventDate);
 
   return (
     <div>
@@ -43,7 +55,19 @@ const SingleMeetingAnalysisContainer = () => {
             `}
           >
             <SingleMeetupSummary attendees={attendees} />
-            <MeetupMembersSummary attendees={attendees} eventDate={eventDate} />
+            <MeetupMembersPercentageSummary
+              meetupMembersWhoAttended={meetupMembersWhoAttended}
+              meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
+            />
+
+            <MeetupMembersSummary
+              title="Attendees Joined This Meetup Within..."
+              attendeesByDate={meetupMembersWhoAttended}
+            />
+            <MeetupMembersSummary
+              title="RSVPers Joined This Meetup Within..."
+              attendeesByDate={meetupMembersWhoRSVPd}
+            />
           </div>
         </React.Fragment>
       )}
