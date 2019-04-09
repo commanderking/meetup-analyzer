@@ -3,6 +3,10 @@ import { css, jsx } from "@emotion/core";
 import React, { useState } from "react";
 import csv from "csvtojson";
 import { bindRawMeetupData } from "../SingleMeetingAnalysisUtils";
+import { Button, Label, FormGroup, Input, Form, Col } from "reactstrap";
+
+const labelColumns = 3;
+const inputColumns = 9;
 
 // TODO: Update types here
 const SingleMeetingForm = ({
@@ -42,49 +46,54 @@ const SingleMeetingForm = ({
   return (
     <div>
       <h1>Enter Meetup Attendance CSV Data</h1>
-      <form>
-        <div>
-          <label>
-            Event Name:{" "}
-            <input
-              value={eventName}
-              placeholder="UX in Ed Tech"
-              onChange={handleEventNameChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Event Date:{" "}
-            <input
-              value={eventDate}
-              placeholder="MM/DD/YYYY"
-              onChange={handleEventDateChange}
-            />
-          </label>
-        </div>
+      <div
+        css={css`
+          width: 700px;
+          margin: auto;
+        `}
+      >
+        <Form>
+          <FormGroup row>
+            <Label sm={labelColumns}>Event Name: </Label>
+            <Col sm={inputColumns}>
+              <Input
+                value={eventName}
+                placeholder="UX in Ed Tech"
+                onChange={handleEventNameChange}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm={labelColumns}>Event Date: </Label>
+            <Col sm={inputColumns}>
+              <Input
+                value={eventDate}
+                placeholder="MM/DD/YYYY"
+                onChange={handleEventDateChange}
+              />
+            </Col>
+          </FormGroup>
 
-        <div>
-          <label>
-            Event Attendance Data: <br />
-            <textarea
-              css={css`
-                 {
-                  width: 500px;
-                  height: 200px;
-                }
-              `}
-              value={rawMeetupData}
-              placeholder={"Enter csv data here..."}
-              onChange={handleChange}
-            />
-          </label>
-          <div />
-          <button type="submit" onClick={submitJSON}>
+          <div>
+            <FormGroup row>
+              <Label sm={labelColumns}>Event Attendance Data: </Label>
+              <Col sm={inputColumns}>
+                <Input
+                  rows={10}
+                  type="textarea"
+                  value={rawMeetupData}
+                  placeholder={"Enter csv data here..."}
+                  onChange={handleChange}
+                />
+              </Col>
+            </FormGroup>
+            <div />
+          </div>
+          <Button color="success" type="submit" onClick={submitJSON}>
             Summarize Data
-          </button>
-        </div>
-      </form>
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 };
