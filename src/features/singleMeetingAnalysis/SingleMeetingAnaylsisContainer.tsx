@@ -4,11 +4,15 @@ import MeetupMembersSummary from "./MeetupMembersSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
 import MeetupMembersPercentageSummary from "./components/MeetupMembersPercentageSummary";
+import SignUpAreaChart from "./components/SignUpAreaChart";
+import _ from "lodash";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import {
   getMeetupMembersWhoAttendedSummary,
-  getMeetupMembersWhoRSVPd
+  getMeetupMembersWhoRSVPd,
+  getSignupsPerDay,
+  getSingupsAccumulated
 } from "./SingleMeetingAnalysisUtils";
 
 const SingleMeetingAnalysisContainer = () => {
@@ -23,6 +27,7 @@ const SingleMeetingAnalysisContainer = () => {
 
   const meetupMembersWhoRSVPd = getMeetupMembersWhoRSVPd(attendees, eventDate);
 
+  const signupData = getSingupsAccumulated(attendees, eventDate);
   return (
     <div>
       {attendees.length === 0 && (
@@ -55,6 +60,7 @@ const SingleMeetingAnalysisContainer = () => {
             `}
           >
             <SingleMeetupSummary attendees={attendees} />
+            <SignUpAreaChart data={_.values(signupData)} />
             <MeetupMembersPercentageSummary
               meetupMembersWhoAttended={meetupMembersWhoAttended}
               meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}

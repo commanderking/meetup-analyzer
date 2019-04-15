@@ -31,8 +31,8 @@ const MeetupMemberSummary = ({
 
   return (
     <div>
-      <h2>{title}</h2>
-      <ResponsiveContainer width="100%" height={250}>
+      <h3>{title}</h3>
+      <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie
             data={pieChartData}

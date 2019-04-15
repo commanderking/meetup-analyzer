@@ -1,4 +1,8 @@
-import moment from "moment";
+import Moment from "moment";
+import { extendMoment } from "moment-range";
+import _ from "lodash";
+// @ts-ignore
+const moment = extendMoment(Moment);
 
 import {
   RawAttendeeData,
@@ -195,4 +199,98 @@ export const getSummaryData = (attendees: AttendeeData[]) => {
       attendeesWhoJoinedMeetupForEvent: 0
     }
   );
+};
+
+export const getFirstDateAttendeeSignedUp = (attendees: AttendeeData[]) => {
+  return attendees.reduce((earliestDate: any, attendee: AttendeeData) => {
+    return attendee.rsvpDate && moment(attendee.rsvpDate) < earliestDate
+      ? moment(attendee.rsvpDate)
+      : earliestDate;
+  }, moment());
+};
+
+// TODO: Type this better
+const weekdayNumberToTextMap: any = {
+  0: "Sun",
+  1: "Mon",
+  2: "Tue",
+  3: "Wed",
+  4: "Thu",
+  5: "Fri",
+  6: "Sat"
+};
+
+const createInitialSignups = (days: number, firstDate: any) => {
+  let initialSignups: any = {};
+  _.times(days + 1, index => {
+    const dateOfSignup = moment(firstDate).add(index, "days");
+    const dayOfWeek = weekdayNumberToTextMap[dateOfSignup.day()];
+
+    const displayDate = `${dateOfSignup.month() + 1}/${dateOfSignup.date()}`;
+
+    initialSignups[index] = {
+      daysSinceFirstSignupDay: index,
+      rawDate: dateOfSignup,
+      count: 0,
+      dayOfWeek,
+      displayDate
+    };
+  });
+
+  return initialSignups;
+};
+
+export const getSignupsPerDay = (
+  attendees: AttendeeData[],
+  eventDate: string
+) => {
+  const firstDate = getFirstDateAttendeeSignedUp(attendees);
+  const difference = moment()
+    .range(firstDate, new Date(eventDate))
+    .diff("days");
+
+  const attendeesWhoRSVPd = attendees.filter(attendee => attendee.didRSVP);
+  const initialSignups = createInitialSignups(difference, firstDate);
+
+  return attendeesWhoRSVPd.reduce((acc: any, attendee: AttendeeData) => {
+    const signupDate =
+      (attendee.rsvpDate && moment(attendee.rsvpDate)) ||
+      moment(new Date(eventDate));
+
+    const daysAfterFirstDay = moment()
+      .range(firstDate, signupDate)
+      .diff("days");
+
+    return {
+      ...acc,
+      [daysAfterFirstDay]: {
+        ...acc[daysAfterFirstDay],
+        count: acc[daysAfterFirstDay].count + 1
+      }
+    };
+  }, initialSignups);
+};
+
+export const getSingupsAccumulated = (
+  attendees: AttendeeData[],
+  eventDate: string
+) => {
+  const signupsPerDay = getSignupsPerDay(attendees, eventDate);
+
+  const signupsAfterFirstDay = _.omit(signupsPerDay, "0");
+  const accumulatedSignUpsPerDay = _.reduce(
+    signupsAfterFirstDay,
+    (acc, day) => {
+      return {
+        ...acc,
+        [day.daysSinceFirstSignupDay]: {
+          ...day,
+          // @ts-ignore
+          count: day.count + acc[day.daysSinceFirstSignupDay - 1].count
+        }
+      };
+    },
+    { 0: signupsPerDay["0"] }
+  );
+  return accumulatedSignUpsPerDay;
 };

@@ -17,7 +17,7 @@ const MeetupMembersPercentageSummary = ({
   console.log("react", React);
   return (
     <div>
-      <h2>% of RSVPs who Attended By Meetup Sign Up Date</h2>
+      <h3>% of RSVPs who Attended By Meetup Sign Up Date</h3>
       <div
         id="AttendeePercentagesByMeetupRegistrationDate"
         css={css`

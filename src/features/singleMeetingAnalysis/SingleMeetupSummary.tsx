@@ -13,7 +13,7 @@ export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
   } = summary;
   return (
     <div>
-      <h2>Summary of Meetup</h2>
+      <h3>Summary of Meetup</h3>
       <div
         css={css`
           text-align: left;
