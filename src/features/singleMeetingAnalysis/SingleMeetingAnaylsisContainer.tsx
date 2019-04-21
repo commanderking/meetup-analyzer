@@ -4,16 +4,16 @@ import MeetupMembersSummary from "./MeetupMembersSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
 import MeetupMembersPercentageSummary from "./components/MeetupMembersPercentageSummary";
-import SignUpAreaChart from "./components/SignUpAreaChart";
+import SignUpSumamry from "./components/SignUpSummary";
+
 import _ from "lodash";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import {
   getMeetupMembersWhoAttendedSummary,
-  getMeetupMembersWhoRSVPd,
-  getSignupsPerDay,
-  getSingupsAccumulated
+  getMeetupMembersWhoRSVPd
 } from "./SingleMeetingAnalysisUtils";
+import SignupSummary from "./components/SignUpSummary";
 
 const SingleMeetingAnalysisContainer = () => {
   const [eventName, setEventName] = useState("");
@@ -27,7 +27,6 @@ const SingleMeetingAnalysisContainer = () => {
 
   const meetupMembersWhoRSVPd = getMeetupMembersWhoRSVPd(attendees, eventDate);
 
-  const signupData = getSingupsAccumulated(attendees, eventDate);
   return (
     <div>
       {attendees.length === 0 && (
@@ -52,6 +51,7 @@ const SingleMeetingAnalysisContainer = () => {
           >
             Enter new Data
           </button>
+          <SingleMeetupSummary attendees={attendees} />
           <div
             id="MeetingStatistics"
             css={css`
@@ -59,8 +59,7 @@ const SingleMeetingAnalysisContainer = () => {
               grid-template-columns: 1fr 1fr;
             `}
           >
-            <SingleMeetupSummary attendees={attendees} />
-            <SignUpAreaChart data={_.values(signupData)} />
+            <SignupSummary attendees={attendees} eventDate={eventDate} />
             <MeetupMembersPercentageSummary
               meetupMembersWhoAttended={meetupMembersWhoAttended}
               meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}

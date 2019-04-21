@@ -4,7 +4,6 @@ import { css, jsx } from "@emotion/core";
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active) {
-    console.log(payload, "payload");
     const { dayOfWeek, displayDate, count } = payload[0].payload;
     return (
       <div
@@ -28,11 +27,10 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 const SignUpAreaChart = ({ data }: any) => {
   console.log("react", React);
-  console.log("data", data);
   return (
     <div>
       <BarChart
-        width={500}
+        width={600}
         height={400}
         data={data}
         margin={{

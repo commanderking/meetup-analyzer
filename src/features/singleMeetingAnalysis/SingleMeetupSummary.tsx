@@ -1,5 +1,6 @@
 import React from "react";
 import { getSummaryData } from "./SingleMeetingAnalysisUtils";
+import AttendanceCard from "./components/AttendanceCard";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
@@ -11,28 +12,30 @@ export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
     attendeesWhoRSVPd,
     attendeesWhoJoinedMeetupForEvent
   } = summary;
+  const react = React;
   return (
     <div>
       <h3>Summary of Meetup</h3>
       <div
+        id="SingleMeetupSummary"
         css={css`
-          text-align: left;
-          margin: auto;
-          width: 500px;
           display: grid;
-          grid-template-columns: 5fr 1fr;
+          grid-template-columns: 1fr 1fr 1fr;
         `}
       >
-        <div>RSVPs</div>
-        <div> {numberRSVPs}</div>
-        <div>Total Attendees</div>
-        <div> {numberAttendees}</div>
-        <div>Attendees who RSVP'd</div>
-        <div> {attendeesWhoRSVPd}</div>
-        <div>Attendees who joined group / signed up for event on same day</div>
-        <div>{attendeesWhoJoinedMeetupForEvent}</div>
-        <div>Percentage of RSVPs that Attended</div>
-        <div>{`${Math.round((attendeesWhoRSVPd / numberRSVPs) * 100)}%`}</div>
+        <AttendanceCard
+          headerText="Total Attendees"
+          bodyText={numberAttendees}
+        />
+        <AttendanceCard
+          headerText="% of RSVPs that Attended"
+          bodyText={`${Math.round((attendeesWhoRSVPd / numberRSVPs) * 100)}%`}
+          subBodyText={`${attendeesWhoRSVPd} / ${numberRSVPs}`}
+        />
+        <AttendanceCard
+          headerText="New Members"
+          bodyText={attendeesWhoJoinedMeetupForEvent}
+        />
       </div>
     </div>
   );

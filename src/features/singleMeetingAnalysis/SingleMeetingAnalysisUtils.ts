@@ -271,7 +271,7 @@ export const getSignupsPerDay = (
   }, initialSignups);
 };
 
-export const getSingupsAccumulated = (
+export const getSignupsAccumulated = (
   attendees: AttendeeData[],
   eventDate: string
 ) => {
