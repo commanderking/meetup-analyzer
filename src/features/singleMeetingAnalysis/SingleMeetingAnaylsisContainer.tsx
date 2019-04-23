@@ -1,31 +1,15 @@
 import React, { useState } from "react";
 import { SingleMeetupSummary } from "./SingleMeetupSummary";
-import MeetupMembersSummary from "./MeetupMembersSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
-import MeetupMembersPercentageSummary from "./components/MeetupMembersPercentageSummary";
-import SignUpSumamry from "./components/SignUpSummary";
+import DetailsTabs from "./components/DetailsTabs";
 
 import _ from "lodash";
-/** @jsx jsx */
-import { css, jsx } from "@emotion/core";
-import {
-  getMeetupMembersWhoAttendedSummary,
-  getMeetupMembersWhoRSVPd
-} from "./SingleMeetingAnalysisUtils";
-import SignupSummary from "./components/SignUpSummary";
 
 const SingleMeetingAnalysisContainer = () => {
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [attendees, setAttendees]: [AttendeeData[], any] = useState([]);
-
-  const meetupMembersWhoAttended = getMeetupMembersWhoAttendedSummary(
-    attendees,
-    eventDate
-  );
-
-  const meetupMembersWhoRSVPd = getMeetupMembersWhoRSVPd(attendees, eventDate);
 
   return (
     <div>
@@ -52,28 +36,7 @@ const SingleMeetingAnalysisContainer = () => {
             Enter new Data
           </button>
           <SingleMeetupSummary attendees={attendees} />
-          <div
-            id="MeetingStatistics"
-            css={css`
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-            `}
-          >
-            <SignupSummary attendees={attendees} eventDate={eventDate} />
-            <MeetupMembersPercentageSummary
-              meetupMembersWhoAttended={meetupMembersWhoAttended}
-              meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
-            />
-
-            <MeetupMembersSummary
-              title="Attendees Joined This Meetup Within..."
-              attendeesByDate={meetupMembersWhoAttended}
-            />
-            <MeetupMembersSummary
-              title="RSVPers Joined This Meetup Within..."
-              attendeesByDate={meetupMembersWhoRSVPd}
-            />
-          </div>
+          <DetailsTabs attendees={attendees} eventDate={eventDate} />
         </React.Fragment>
       )}
     </div>

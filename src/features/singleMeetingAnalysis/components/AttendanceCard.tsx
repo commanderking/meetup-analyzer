@@ -23,13 +23,15 @@ const AttendanceCard = ({
           width: 80%;
           margin-bottom: 20px;
           height: 100%;
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
       `}
     >
       <h4
         css={css`
            {
-            background-color: #d3d3d3;
+            background-color: #8884d8;
             padding: 10px;
           }
         `}

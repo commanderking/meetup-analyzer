@@ -14,7 +14,14 @@ export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
   } = summary;
   const react = React;
   return (
-    <div>
+    <div
+      css={css`
+         {
+          padding: 20px;
+          margin-bottom: 20px;
+        }
+      `}
+    >
       <h3>Summary of Meetup</h3>
       <div
         id="SingleMeetupSummary"
