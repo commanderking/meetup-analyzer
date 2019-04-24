@@ -26,7 +26,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 const SignUpAreaChart = ({ data }: any) => {
-  console.log("react", React);
+  const react = React;
   return (
     <div>
       <BarChart

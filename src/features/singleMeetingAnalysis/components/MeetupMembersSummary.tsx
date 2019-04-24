@@ -1,63 +1,82 @@
-import React from "react";
-import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from "recharts";
-import _ from "lodash";
+import React, { useState } from "react";
+import MeetupMembersChart from "./MeetupMembersChart";
+import MeetupMembersPercentageSummary from "./MeetupMembersPercentageSummary";
+import { AttendeeData } from "../SingleMeetupTypes";
+import {
+  getMeetupMembersWhoAttendedSummary,
+  getMeetupMembersWhoRSVPd
+} from "../SingleMeetingAnalysisUtils";
+import { ButtonGroup, Button } from "reactstrap";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red"];
-
-const CategoryDisplayNames = {
-  pastThirtyDays: "Last 30 Days",
-  pastSixMonths: "Last 6 Months",
-  pastYear: "Past Year",
-  pastTwoYears: "Past Two Years",
-  overTwoYearsAgo: "2+ years ago"
+type Props = {
+  attendees: AttendeeData[];
+  eventDate: string;
 };
 
-const MeetupMemberSummary = ({
-  attendeesByDate,
-  title
-}: {
-  attendeesByDate: any;
-  title: string;
-}) => {
-  console.log("react", React);
-  const keys = _.keys(attendeesByDate);
+const MeetupMembers = {
+  ATTENDEES: "ATTENDEES",
+  RSVPERS: "RSVPERS"
+};
 
-  const pieChartData = _.map(keys, key => ({
-    // @ts-ignore - need to type key to ensure it exists in summary?
-    name: CategoryDisplayNames[key],
-    // @ts-ignore - need to type key to ensure it exists in summary?
-    value: attendeesByDate[key]
-  }));
+const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
+  const react = React;
+
+  const [meetupMemberType, setMeetupMemberType] = useState(
+    MeetupMembers.ATTENDEES
+  );
+  const meetupMembersWhoAttended = getMeetupMembersWhoAttendedSummary(
+    attendees,
+    eventDate
+  );
+
+  const meetupMembersWhoRSVPd = getMeetupMembersWhoRSVPd(attendees, eventDate);
 
   return (
     <div>
-      <h3>{title}</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={pieChartData}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={0}
-            outerRadius={80}
-            label
-          >
-            {pieChartData.map((entry, index) => {
-              return (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              );
-            })}
-          </Pie>
-          <Legend layout="horizontal" />
-        </PieChart>
-      </ResponsiveContainer>
+      {/* <MeetupMembersPercentageSummary
+        meetupMembersWhoAttended={meetupMembersWhoAttended}
+        meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
+      /> */}
+      <ButtonGroup>
+        <Button
+          size="sm"
+          color={
+            meetupMemberType === MeetupMembers.ATTENDEES
+              ? "primary"
+              : "secondary"
+          }
+          onClick={() => {
+            setMeetupMemberType(MeetupMembers.ATTENDEES);
+          }}
+        >
+          Attendees
+        </Button>
+        <Button
+          size="sm"
+          color={
+            meetupMemberType === MeetupMembers.RSVPERS ? "primary" : "secondary"
+          }
+          onClick={() => {
+            setMeetupMemberType(MeetupMembers.RSVPERS);
+          }}
+        >
+          RSVPers
+        </Button>
+      </ButtonGroup>
+      {meetupMemberType === MeetupMembers.ATTENDEES && (
+        <MeetupMembersChart
+          title="Attendees Joined This Meetup Within..."
+          attendeesByDate={meetupMembersWhoAttended}
+        />
+      )}
+      {meetupMemberType === MeetupMembers.RSVPERS && (
+        <MeetupMembersChart
+          title="RSVPers Joined This Meetup Within..."
+          attendeesByDate={meetupMembersWhoRSVPd}
+        />
+      )}
     </div>
   );
 };
 
-export default MeetupMemberSummary;
+export default MeetupMembersSummary;
