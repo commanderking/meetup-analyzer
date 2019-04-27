@@ -25,9 +25,11 @@ const SingleMeetingAnalysisContainer = () => {
       )}
       {attendees.length > 0 && (
         <React.Fragment>
-          <h1>
-            Meeting Statistics for {eventName} on {eventDate}
-          </h1>
+          <SingleMeetupSummary
+            attendees={attendees}
+            eventName={eventName}
+            eventDate={eventDate}
+          />
           <Button
             color="info"
             onClick={() => {
@@ -36,7 +38,6 @@ const SingleMeetingAnalysisContainer = () => {
           >
             Enter new Data
           </Button>
-          <SingleMeetupSummary attendees={attendees} />
           <DetailsTabs attendees={attendees} eventDate={eventDate} />
         </React.Fragment>
       )}

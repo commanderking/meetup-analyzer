@@ -3,8 +3,19 @@ import { getSummaryData } from "./SingleMeetingAnalysisUtils";
 import AttendanceCard from "./components/AttendanceCard";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import { AttendeeData } from "./SingleMeetupTypes";
 
-export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
+type Props = {
+  attendees: AttendeeData[];
+  eventName: string;
+  eventDate: string;
+};
+
+export const SingleMeetupSummary = ({
+  attendees,
+  eventName,
+  eventDate
+}: Props) => {
   const summary = getSummaryData(attendees);
   const {
     numberRSVPs,
@@ -22,7 +33,9 @@ export const SingleMeetupSummary = ({ attendees }: { attendees: any[] }) => {
         }
       `}
     >
-      <h3>Summary of Meetup</h3>
+      <h3>
+        Summary of Meetup: {eventName} {eventDate && `on ${eventDate}`}
+      </h3>
       <div
         id="SingleMeetupSummary"
         css={css`
