@@ -24,6 +24,8 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
   const [meetupMemberType, setMeetupMemberType] = useState(
     MeetupMembers.ATTENDEES
   );
+  const [isDropdownOpen, setIsDropDownOpen] = useState(false);
+
   const meetupMembersWhoAttended = getMeetupMembersWhoAttendedSummary(
     attendees,
     eventDate
@@ -33,17 +35,11 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
 
   return (
     <div>
-      {/* <MeetupMembersPercentageSummary
-        meetupMembersWhoAttended={meetupMembersWhoAttended}
-        meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
-      /> */}
       <ButtonGroup>
         <Button
           size="sm"
           color={
-            meetupMemberType === MeetupMembers.ATTENDEES
-              ? "primary"
-              : "secondary"
+            meetupMemberType === MeetupMembers.ATTENDEES ? "info" : "secondary"
           }
           onClick={() => {
             setMeetupMemberType(MeetupMembers.ATTENDEES);
@@ -54,7 +50,7 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
         <Button
           size="sm"
           color={
-            meetupMemberType === MeetupMembers.RSVPERS ? "primary" : "secondary"
+            meetupMemberType === MeetupMembers.RSVPERS ? "info" : "secondary"
           }
           onClick={() => {
             setMeetupMemberType(MeetupMembers.RSVPERS);
@@ -63,6 +59,7 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
           RSVPers
         </Button>
       </ButtonGroup>
+
       {meetupMemberType === MeetupMembers.ATTENDEES && (
         <MeetupMembersChart
           title="Attendees Joined This Meetup Within..."
@@ -78,5 +75,12 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
     </div>
   );
 };
+
+/*
+      <MeetupMembersPercentageSummary
+        meetupMembersWhoAttended={meetupMembersWhoAttended}
+        meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
+      />
+      */
 
 export default MeetupMembersSummary;

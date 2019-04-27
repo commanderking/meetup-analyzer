@@ -3,7 +3,7 @@ import { SingleMeetupSummary } from "./SingleMeetupSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
 import DetailsTabs from "./components/DetailsTabs";
-
+import { Button } from "reactstrap";
 import _ from "lodash";
 
 const SingleMeetingAnalysisContainer = () => {
@@ -28,13 +28,14 @@ const SingleMeetingAnalysisContainer = () => {
           <h1>
             Meeting Statistics for {eventName} on {eventDate}
           </h1>
-          <button
+          <Button
+            color="info"
             onClick={() => {
               setAttendees([]);
             }}
           >
             Enter new Data
-          </button>
+          </Button>
           <SingleMeetupSummary attendees={attendees} />
           <DetailsTabs attendees={attendees} eventDate={eventDate} />
         </React.Fragment>

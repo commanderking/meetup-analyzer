@@ -1,6 +1,7 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { css, jsx } from "@emotion/core";
+import { DesignColors } from "../../constants/Design";
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active) {
@@ -28,7 +29,11 @@ const CustomTooltip = ({ active, payload }: any) => {
 const SignUpAreaChart = ({ data }: any) => {
   const react = React;
   return (
-    <div>
+    <div
+      css={css`
+        margin: auto;
+      `}
+    >
       <BarChart
         width={600}
         height={400}
@@ -39,12 +44,15 @@ const SignUpAreaChart = ({ data }: any) => {
           left: 0,
           bottom: 0
         }}
+        style={{
+          margin: "auto"
+        }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="displayDate" />
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="count" fill="#8884d8" />
+        <Bar dataKey="count" fill={DesignColors.THEME_1} />
       </BarChart>
     </div>
   );

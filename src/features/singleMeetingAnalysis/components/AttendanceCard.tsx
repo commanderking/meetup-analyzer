@@ -1,7 +1,7 @@
 import React from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-
+import { DesignColors } from "../../constants/Design";
 type AttendanceCardProps = {
   headerText: string;
   bodyText: number | string;
@@ -31,7 +31,7 @@ const AttendanceCard = ({
       <h4
         css={css`
            {
-            background-color: #8884d8;
+            background-color: ${DesignColors.THEME_1};
             padding: 10px;
           }
         `}

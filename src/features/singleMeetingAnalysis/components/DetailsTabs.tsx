@@ -22,7 +22,13 @@ const DetailsTab = ({ attendees, eventDate }: Props) => {
   const [activeTab, setActiveTab] = useState(Tabs.MEETUP_SIGNUP);
 
   return (
-    <div id="MeetingStatistics">
+    <div
+      id="MeetingStatistics"
+      css={css`
+        width: 800px;
+        margin: auto;
+      `}
+    >
       <Nav tabs>
         <NavItem>
           <NavLink

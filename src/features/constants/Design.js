@@ -1,3 +1,3 @@
 export const DesignColors = {
-  PURPLE: "#8884d8"
+  THEME_1: "#17a2b8" // turqoise
 };

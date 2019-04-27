@@ -33,9 +33,7 @@ const SignupSummary = ({
       <ButtonGroup>
         <Button
           size="sm"
-          color={
-            signupView === SignupViews.ACCUMULATED ? "primary" : "secondary"
-          }
+          color={signupView === SignupViews.ACCUMULATED ? "info" : "secondary"}
           onClick={() => {
             setShowSignupView(SignupViews.ACCUMULATED);
           }}
@@ -44,7 +42,7 @@ const SignupSummary = ({
         </Button>
         <Button
           size="sm"
-          color={signupView === SignupViews.DAILY ? "primary" : "secondary"}
+          color={signupView === SignupViews.DAILY ? "info" : "secondary"}
           onClick={() => {
             setShowSignupView(SignupViews.DAILY);
           }}
