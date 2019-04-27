@@ -37,7 +37,7 @@ const DetailsTab = ({ attendees, eventDate }: Props) => {
               setActiveTab(Tabs.MEETUP_SIGNUP);
             }}
           >
-            Sign Ups Over Time
+            Signups Over Time
           </NavLink>
         </NavItem>
         <NavItem>

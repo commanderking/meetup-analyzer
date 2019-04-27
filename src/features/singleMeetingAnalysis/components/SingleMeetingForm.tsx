@@ -17,7 +17,7 @@ const SingleMeetingForm = ({
   setEventName
 }: any) => {
   // Weird - without this, React is not defined
-  console.log("react", React);
+  const react = React;
 
   const [rawMeetupData, setMeetupData] = useState("");
 
@@ -58,7 +58,7 @@ const SingleMeetingForm = ({
             <Col sm={inputColumns}>
               <Input
                 value={eventName}
-                placeholder="UX in Ed Tech"
+                placeholder="Name of your event..."
                 onChange={handleEventNameChange}
               />
             </Col>
