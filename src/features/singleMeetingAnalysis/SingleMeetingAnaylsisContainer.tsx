@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SingleMeetupSummary } from "./SingleMeetupSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
 import DetailsTabs from "./components/DetailsTabs";
 import { Button } from "reactstrap";
 import _ from "lodash";
+import { postEvent } from "../../requests/eventRequest";
 
 const SingleMeetingAnalysisContainer = () => {
   const [eventName, setEventName] = useState("");
@@ -39,6 +40,17 @@ const SingleMeetingAnalysisContainer = () => {
             Enter new Data
           </Button>
           <DetailsTabs attendees={attendees} eventDate={eventDate} />
+          <Button
+            onClick={async () => {
+              const result = await postEvent({
+                eventName,
+                eventDate
+              });
+              console.log("result", result);
+            }}
+          >
+            Save Summary
+          </Button>
         </React.Fragment>
       )}
     </div>

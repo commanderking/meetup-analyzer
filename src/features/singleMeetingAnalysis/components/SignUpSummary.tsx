@@ -3,7 +3,6 @@ import { AttendeeData } from "../SingleMeetupTypes";
 import SignUpAreaChart from "./SignUpAreaChart";
 import _ from "lodash";
 import { ButtonGroup, Button } from "reactstrap";
-import { DesignColors } from "../../constants/Design";
 import {
   getSignupsPerDay,
   getSignupsAccumulated
