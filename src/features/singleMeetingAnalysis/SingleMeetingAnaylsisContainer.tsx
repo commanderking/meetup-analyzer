@@ -44,7 +44,8 @@ const SingleMeetingAnalysisContainer = () => {
             onClick={async () => {
               const result = await postEvent({
                 eventName,
-                eventDate
+                eventDate,
+                attendees
               });
               console.log("result", result);
             }}
