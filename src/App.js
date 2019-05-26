@@ -30,7 +30,12 @@ class App extends Component {
               return <AuthCallback {...props} />;
             }}
           />
-          <Route exact path="/login" component={LoginContainer} />
+          <Route
+            exact
+            path="/login"
+            auth={auth}
+            component={props => <LoginContainer auth={auth} {...props} />}
+          />
           <Route
             path="/singleMeeting"
             component={SingleMeetingAnalysisContainer}

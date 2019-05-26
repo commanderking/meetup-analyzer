@@ -20,7 +20,7 @@ const LoginContainer = ({ auth }: any) => {
           Login
         </button>
       )}
-      {
+      {isAuthenticated() && (
         <button
           onClick={() => {
             logout();
@@ -28,7 +28,7 @@ const LoginContainer = ({ auth }: any) => {
         >
           Logout
         </button>
-      }
+      )}
     </div>
   );
 };
