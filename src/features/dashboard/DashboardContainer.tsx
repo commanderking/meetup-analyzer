@@ -19,7 +19,7 @@ const DashboardContainer = ({ auth }: any) => {
     console.log("auth", auth.getIdToken());
     console.log("auth", auth.isAuthenticated());
     if (auth && auth.getAccessToken()) {
-      login(auth.getAccessToken());
+      login(auth.getIdToken());
     }
   });
 

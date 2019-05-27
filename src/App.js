@@ -36,10 +36,7 @@ class App extends Component {
             auth={auth}
             component={props => <LoginContainer auth={auth} {...props} />}
           />
-          <Route
-            path="/singleMeeting"
-            component={SingleMeetingAnalysisContainer}
-          />
+          <Route path="/" exact component={SingleMeetingAnalysisContainer} />
           <Route
             path="/dashboard"
             component={props => <DashboardContainer auth={auth} {...props} />}
