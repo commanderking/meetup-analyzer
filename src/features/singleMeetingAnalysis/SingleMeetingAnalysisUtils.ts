@@ -11,7 +11,6 @@ import {
 } from "./SingleMeetupTypes";
 
 const defaultAttendedMarker = "Y";
-const eventDate = new Date("03/27/2019");
 
 const attendedMeetup = (user: RawAttendeeData) => {
   return user.Attendance === defaultAttendedMarker ? true : false;

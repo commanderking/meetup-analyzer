@@ -3,6 +3,10 @@ import LoginContainer from "../login/LoginContainer";
 import { getEvents } from "../../requests/eventRequest";
 import { getAttendanceForEvents } from "../../requests/attendanceRequest";
 import { useAttendanceAndEvents } from "./DashboardRequests";
+import EventCard from "./components/EventCard";
+import { EventResponse } from "../../requests/eventTypes";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 
 const login = async (authenticationToken: string) => {
   await fetch("http://localhost:5000/login", {
@@ -35,6 +39,18 @@ const DashboardContainer = ({ auth }: any) => {
     <div>
       <LoginContainer auth={auth} />
       <div>Dashboard</div>
+      <div
+        css={css`
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-column-gap: 20px;
+          padding: 20px;
+        `}
+      >
+        {events.map((event: EventResponse) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
     </div>
   );
 };

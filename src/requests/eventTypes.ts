@@ -4,6 +4,15 @@ export type EventData = {
   // meetupEventId: string;
 };
 
+// Data coming back from eventRequest is shaped into the following form:
+export type EventResponse = {
+  id: string;
+  name: string;
+  date: string;
+  attendees: number;
+  rsvps: number;
+};
+
 export type AttendeeData = {
   userId: string | null;
   didAttend: boolean;
