@@ -7,10 +7,9 @@ const LoginContainer = ({ auth }: any) => {
     if (localStorage.getItem("isLoggedIn") === "true") {
       renewSession();
     }
-  });
+  }, []);
   return (
     <div>
-      <p>Hey</p>
       {!isAuthenticated() && (
         <button
           onClick={() => {

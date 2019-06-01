@@ -7,6 +7,7 @@ export default class Auth {
   expiresAt;
   auth0 = new auth0.WebAuth({
     domain: process.env.REACT_APP_AUTH_DOMAIN,
+    audience: "https://dev-1q07ym6g.auth0.com/api/v2/",
     clientID: process.env.REACT_APP_AUTH_CLIENTID,
     redirectUri: "http://localhost:3000/authCallback",
     responseType: "token id_token",
@@ -29,7 +30,6 @@ export default class Auth {
 
   handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
-      console.log("authResult", authResult);
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
       } else if (err) {
@@ -51,14 +51,11 @@ export default class Auth {
   setSession(authResult) {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem("isLoggedIn", "true");
-    console.log("setting session");
     // Set the time that the Access Token will expire at
     let expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
-
-    console.log("expiresAt", this.expiresAt);
 
     // navigate to the home route
     history.replace("/dashboard");
@@ -99,7 +96,6 @@ export default class Auth {
     // Check whether the current time is past the
     // access token's expiry time
     let expiresAt = this.expiresAt;
-    console.log("this.expiresAt", this.expiresAt);
     return new Date().getTime() < expiresAt;
   }
 }
