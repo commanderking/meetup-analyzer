@@ -11,6 +11,7 @@ export type EventResponse = {
   date: string;
   attendees: number;
   rsvps: number;
+  attendeesWhoRsvpd: number;
 };
 
 export type AttendeeData = {

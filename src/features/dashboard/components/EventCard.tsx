@@ -11,9 +11,9 @@ type Props = {
 };
 
 const EventCard = ({ event }: Props) => {
-  const { name, date, attendees, rsvps } = event;
+  const { name, date, attendees, rsvps, attendeesWhoRsvpd } = event;
+  const attendancePercent = `${Math.round((attendeesWhoRsvpd / rsvps) * 100)}%`;
 
-  const attendancePercent = `${Math.round((attendees / rsvps) * 100)}%`;
   return (
     <Card
       css={css`
@@ -34,7 +34,7 @@ const EventCard = ({ event }: Props) => {
             }
           `}
         >
-          <EventCardStat stat={event.attendees} description="Attendees" />
+          <EventCardStat stat={attendees} description="Attendees" />
           <EventCardStat stat={attendancePercent} description="Show Rate" />
         </div>
       </CardText>
