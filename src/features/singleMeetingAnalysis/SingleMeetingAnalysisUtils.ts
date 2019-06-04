@@ -244,11 +244,16 @@ export const getSignupsPerDay = (
   eventDate: string
 ) => {
   const firstDate = getFirstDateAttendeeSignedUp(attendees);
-  const difference = moment()
-    .range(firstDate, new Date(eventDate))
-    .diff("days");
+  const difference =
+    moment()
+      .range(firstDate, new Date(eventDate))
+      .diff("days") + 1;
+
+  console.log("difference", difference);
 
   const attendeesWhoRSVPd = attendees.filter(attendee => attendee.didRSVP);
+
+  console.log("attendeesWhoRSVPd", attendeesWhoRSVPd);
   const initialSignups = createInitialSignups(difference, firstDate);
 
   return attendeesWhoRSVPd.reduce((acc: any, attendee: AttendeeData) => {
@@ -256,9 +261,12 @@ export const getSignupsPerDay = (
       (attendee.rsvpDate && moment(attendee.rsvpDate)) ||
       moment(new Date(eventDate));
 
-    const daysAfterFirstDay = moment()
-      .range(firstDate, signupDate)
-      .diff("days");
+    const daysAfterFirstDay =
+      moment()
+        .range(firstDate, signupDate)
+        .diff("days") + 1;
+    console.log("signupDate", signupDate);
+    console.log("daysAfterFirstDay", daysAfterFirstDay);
 
     return {
       ...acc,

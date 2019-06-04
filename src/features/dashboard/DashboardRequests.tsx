@@ -7,7 +7,6 @@ type ApiState = {
   hasError: boolean;
   errorMessage: string;
   events: Array<any>;
-  attendance: Array<any>;
 };
 
 const getEventsAndAttendanceForEvents = async (setApiState: any) => {
@@ -20,12 +19,12 @@ const getEventsAndAttendanceForEvents = async (setApiState: any) => {
     const events = await getEvents();
     // @ts-ignore fix this once event type clear
     const eventIds = events.map(event => event.id);
-    const attendance = await getAttendanceForEvents(eventIds);
+    // const attendance = await getAttendanceForEvents(eventIds);
     setApiState((prevState: ApiState) => ({
       ...prevState,
       isLoading: false,
-      events,
-      attendance
+      events
+      // attendance
     }));
   } catch (err) {
     setApiState((prevState: ApiState) => ({
@@ -43,8 +42,7 @@ export const useAttendanceAndEvents = () => {
     isLoading: false,
     hasError: false,
     errorMessage: "",
-    events: [],
-    attendance: []
+    events: []
   });
   useEffect(() => {
     getEventsAndAttendanceForEvents(setApiState);

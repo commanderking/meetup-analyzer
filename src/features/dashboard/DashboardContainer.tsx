@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 import LoginContainer from "../login/LoginContainer";
-import { getEvents } from "../../requests/eventRequest";
-import { getAttendanceForEvents } from "../../requests/attendanceRequest";
 import { useAttendanceAndEvents } from "./DashboardRequests";
 import EventCard from "./components/EventCard";
 import { EventResponse } from "../../requests/eventTypes";
-/** @jsx jsx */
-import { css, jsx } from "@emotion/core";
-
+import { useEventsState } from "../../context/eventsContext";
 const login = async (authenticationToken: string) => {
   await fetch("http://localhost:5000/login", {
     method: "GET",
@@ -30,9 +28,10 @@ const DashboardContainer = ({ auth }: any) => {
     }
   }, []);
 
-  const { isLoading, hasError, events, attendance } = useAttendanceAndEvents();
-  console.log("attendance", attendance);
-  console.log("events", events);
+  const { isLoading, events } = useAttendanceAndEvents();
+  const { setEvents, events: contextEvents } = useEventsState();
+  setEvents(events);
+  console.log("events", contextEvents);
 
   if (isLoading) return <div>Loading...</div>;
   return (
@@ -44,6 +43,8 @@ const DashboardContainer = ({ auth }: any) => {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           grid-column-gap: 20px;
+          grid-row-gap: 20px;
+          grid-auto-rows: 1fr;
           padding: 20px;
         `}
       >
