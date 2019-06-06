@@ -5,6 +5,8 @@ import { Router, Route } from "react-router-dom";
 import LoginContainer from "./features/login/LoginContainer";
 import DashboardContainer from "./features/dashboard/DashboardContainer";
 import AuthCallback from "./auth/AuthCallback";
+import { EventsProvider } from "./context/eventsContext";
+import EventContainer from "./features/event/EventContainer";
 
 import Auth from "./auth/auth";
 import history from "./auth/history";
@@ -19,6 +21,9 @@ const handleAuthentication = (nextState, replace) => {
 
 class App extends Component {
   render() {
+    // Some awful emotion/typescript/react-app issue -
+    // https://github.com/emotion-js/emotion/issues/1303
+    window.React = React;
     return (
       <Router history={history}>
         <div className="App">
@@ -37,10 +42,16 @@ class App extends Component {
             component={props => <LoginContainer auth={auth} {...props} />}
           />
           <Route path="/" exact component={SingleMeetingAnalysisContainer} />
-          <Route
-            path="/dashboard"
-            component={props => <DashboardContainer auth={auth} {...props} />}
-          />
+          <EventsProvider>
+            <Route
+              path="/dashboard"
+              render={props => <DashboardContainer auth={auth} {...props} />}
+            />
+            <Route
+              path="/event/:id"
+              render={props => <EventContainer {...props} />}
+            />
+          </EventsProvider>
         </div>
       </Router>
     );

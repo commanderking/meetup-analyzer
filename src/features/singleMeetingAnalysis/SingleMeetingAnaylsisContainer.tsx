@@ -47,7 +47,6 @@ const SingleMeetingAnalysisContainer = () => {
                 eventDate,
                 attendees
               });
-              console.log("result", result);
             }}
           >
             Save Summary
