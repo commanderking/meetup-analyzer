@@ -1,11 +1,12 @@
 import React from "react";
+import { useEventsState } from "../../context/eventsContext";
 
 type Props = {
   match: any;
 };
 
 const EventContainer = ({ match }: Props) => {
-  console.log("match", match);
+  const { events } = useEventsState();
   return <div>Event {match.params.id}</div>;
 };
 

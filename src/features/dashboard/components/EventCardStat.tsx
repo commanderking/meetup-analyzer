@@ -16,7 +16,8 @@ const EventCardStat = ({ stat, description }: Props) => {
         }
       `}
     >
-      <h1>{stat}</h1> {description}
+      <h1>{stat}</h1>
+      <span>{description}</span>
     </div>
   );
 };

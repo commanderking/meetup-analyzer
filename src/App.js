@@ -42,18 +42,16 @@ class App extends Component {
             component={props => <LoginContainer auth={auth} {...props} />}
           />
           <Route path="/" exact component={SingleMeetingAnalysisContainer} />
-          <Route
-            path="/dashboard"
-            render={props => (
-              <EventsProvider>
-                <DashboardContainer auth={auth} {...props} />
-              </EventsProvider>
-            )}
-          />
-          <Route
-            path="/event/:id"
-            render={props => <EventContainer {...props} />}
-          />
+          <EventsProvider>
+            <Route
+              path="/dashboard"
+              render={props => <DashboardContainer auth={auth} {...props} />}
+            />
+            <Route
+              path="/event/:id"
+              render={props => <EventContainer {...props} />}
+            />
+          </EventsProvider>
         </div>
       </Router>
     );
