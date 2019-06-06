@@ -29,9 +29,8 @@ const DashboardContainer = ({ auth }: any) => {
   }, []);
 
   const { isLoading, events } = useAttendanceAndEvents();
-  const { setEvents, events: contextEvents } = useEventsState();
+  const { setEvents } = useEventsState();
   setEvents(events);
-  console.log("events", contextEvents);
 
   if (isLoading) return <div>Loading...</div>;
   return (

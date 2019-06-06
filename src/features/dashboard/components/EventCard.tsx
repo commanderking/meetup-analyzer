@@ -25,7 +25,6 @@ const EventCard = ({ event }: Props) => {
           height: 100%;
         }
       `}
-        onClick={() => {}}
       >
         <Card
           css={css`
