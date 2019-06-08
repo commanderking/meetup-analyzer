@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../requests/eventRequest";
 import { useEventsState } from "../context/eventsContext";
+import { EventResponse } from "../requests/eventTypes";
 
 type ApiState = {
   isLoading: boolean;
   hasError: boolean;
   errorMessage: string;
-  events: Array<any>;
+  events: EventResponse[];
 };
 
 const loadEvents = async (setApiState: any, setEvents: any) => {

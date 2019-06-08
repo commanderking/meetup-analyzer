@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-
+import { EventResponse } from "../requests/eventTypes";
 const EventsContext = React.createContext<{
-  events: Array<any>;
+  events: Array<EventResponse>;
   currentEvent: string;
   setEvents: any;
   setCurrentEvent: any;
