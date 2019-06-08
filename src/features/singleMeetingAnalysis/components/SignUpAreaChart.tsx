@@ -1,5 +1,6 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+/** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import { DesignColors } from "../../constants/Design";
 
@@ -27,7 +28,6 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 const SignUpAreaChart = ({ data }: any) => {
-  const react = React;
   return (
     <div
       css={css`

@@ -3,7 +3,7 @@ import "./App.css";
 import SingleMeetingAnalysisContainer from "./features/singleMeetingAnalysis/SingleMeetingAnaylsisContainer";
 import { Router, Route } from "react-router-dom";
 import LoginContainer from "./features/login/LoginContainer";
-import DashboardContainer from "./features/dashboard/DashboardContainer";
+import DashboardContainer from "features/dashboard/DashboardContainer";
 import AuthCallback from "./auth/AuthCallback";
 import { EventsProvider } from "./context/eventsContext";
 import EventContainer from "./features/event/EventContainer";

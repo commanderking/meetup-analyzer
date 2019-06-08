@@ -13,7 +13,6 @@ const AttendanceCard = ({
   bodyText,
   subBodyText
 }: AttendanceCardProps) => {
-  const react = React;
   return (
     <div
       css={css`

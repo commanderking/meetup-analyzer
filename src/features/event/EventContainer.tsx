@@ -19,14 +19,14 @@ const EventContainer = ({ match }: Props) => {
 
   const { events } = useEventsState();
   console.log("events", events);
+  const event = events.find(event => (event.id = match.params.id));
+
   useEffect(() => {
-    const event = events.find(event => (event.id = match.params.id));
     if (event) {
       getAttendance(event.id, setAttendance);
     }
-  }, [events]);
+  }, [event]);
 
-  const event = events.find(event => (event.id = match.params.id));
   if (isLoading) return <div>Loading...</div>;
   if (!event) return <div>No event found</div>;
   return (

@@ -1,8 +1,6 @@
 import Moment from "moment";
 import { extendMoment } from "moment-range";
 import _ from "lodash";
-// @ts-ignore
-const moment = extendMoment(Moment);
 
 import {
   RawAttendeeData,
@@ -10,6 +8,8 @@ import {
   RelativeMeetupRegistrationDates
 } from "./SingleMeetupTypes";
 
+// @ts-ignore
+const moment = extendMoment(Moment);
 const defaultAttendedMarker = "Y";
 
 const attendedMeetup = (user: RawAttendeeData) => {

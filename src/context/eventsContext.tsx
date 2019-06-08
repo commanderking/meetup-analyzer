@@ -18,7 +18,7 @@ const EventsProvider = (props: {}) => {
       currentEvent,
       setCurrentEvent
     };
-  }, [events]);
+  }, [events, currentEvent]);
 
   return <EventsContext.Provider value={value} {...props} />;
 };

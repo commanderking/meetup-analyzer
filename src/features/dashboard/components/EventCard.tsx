@@ -1,7 +1,7 @@
 import React from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-import { Card, CardText, CardSubtitle, Button } from "reactstrap";
+import { Card, CardSubtitle } from "reactstrap";
 import moment from "moment";
 import { EventResponse } from "../../../requests/eventTypes";
 import EventCardStat from "./EventCardStat";

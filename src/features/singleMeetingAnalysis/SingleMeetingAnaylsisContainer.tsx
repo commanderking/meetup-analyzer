@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SingleMeetupSummary } from "./SingleMeetupSummary";
 import SingleMeetingForm from "./components/SingleMeetingForm";
 import { AttendeeData } from "./SingleMeetupTypes";
 import DetailsTabs from "./components/DetailsTabs";
 import { Button } from "reactstrap";
-import _ from "lodash";
 import { postEvent } from "../../requests/eventRequest";
 
 const SingleMeetingAnalysisContainer = () => {
@@ -42,7 +41,7 @@ const SingleMeetingAnalysisContainer = () => {
           <DetailsTabs attendees={attendees} eventDate={eventDate} />
           <Button
             onClick={async () => {
-              const result = await postEvent({
+              await postEvent({
                 eventName,
                 eventDate,
                 attendees

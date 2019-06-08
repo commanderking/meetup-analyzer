@@ -19,7 +19,6 @@ const MeetupMemberSummary = ({
   attendeesByDate: any;
   title: string;
 }) => {
-  const react = React;
   const keys = _.keys(attendeesByDate);
 
   const pieChartData = _.map(keys, key => ({

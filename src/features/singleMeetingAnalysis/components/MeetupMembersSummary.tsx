@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import MeetupMembersChart from "./MeetupMembersChart";
-import MeetupMembersPercentageSummary from "./MeetupMembersPercentageSummary";
 import { AttendeeData } from "../SingleMeetupTypes";
 import {
   getMeetupMembersWhoAttendedSummary,
@@ -19,12 +18,9 @@ const MeetupMembers = {
 };
 
 const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
-  const react = React;
-
   const [meetupMemberType, setMeetupMemberType] = useState(
     MeetupMembers.ATTENDEES
   );
-  const [isDropdownOpen, setIsDropDownOpen] = useState(false);
 
   const meetupMembersWhoAttended = getMeetupMembersWhoAttendedSummary(
     attendees,

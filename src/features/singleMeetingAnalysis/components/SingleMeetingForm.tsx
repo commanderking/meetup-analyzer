@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-import React, { useState } from "react";
+import { useState } from "react";
 import csv from "csvtojson";
 import { bindRawMeetupData } from "../SingleMeetingAnalysisUtils";
 import { Button, Label, FormGroup, Input, Form, Col } from "reactstrap";
@@ -16,9 +16,6 @@ const SingleMeetingForm = ({
   eventName,
   setEventName
 }: any) => {
-  // Weird - without this, React is not defined
-  const react = React;
-
   const [rawMeetupData, setMeetupData] = useState("");
 
   const handleChange = (event: any) => {

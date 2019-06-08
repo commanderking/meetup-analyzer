@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import LoginContainer from "../login/LoginContainer";
 import { useEventsCall } from "../../context/eventsHook";
-import EventCard from "./components/EventCard";
+import EventCard from "features/dashboard/components/EventCard";
 import { EventResponse } from "../../requests/eventTypes";
 const login = async (authenticationToken: string) => {
   await fetch("http://localhost:5000/login", {
@@ -25,7 +25,7 @@ const DashboardContainer = ({ auth }: any) => {
     if (auth && auth.getAccessToken()) {
       login(auth.getIdToken());
     }
-  }, []);
+  }, [auth]);
 
   const { isLoading, events } = useEventsCall();
 

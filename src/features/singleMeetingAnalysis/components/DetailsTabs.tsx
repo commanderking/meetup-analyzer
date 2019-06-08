@@ -17,8 +17,6 @@ const Tabs = {
 };
 
 const DetailsTab = ({ attendees, eventDate }: Props) => {
-  const react = React;
-
   const [activeTab, setActiveTab] = useState(Tabs.MEETUP_SIGNUP);
 
   return (

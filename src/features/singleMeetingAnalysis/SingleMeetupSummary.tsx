@@ -23,7 +23,6 @@ export const SingleMeetupSummary = ({
     attendeesWhoRSVPd,
     attendeesWhoJoinedMeetupForEvent
   } = summary;
-  const react = React;
   return (
     <div
       css={css`

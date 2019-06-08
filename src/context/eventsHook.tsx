@@ -46,7 +46,7 @@ export const useEventsCall = () => {
   const { setEvents } = useEventsState();
   useEffect(() => {
     loadEvents(setApiState, setEvents);
-  }, []);
+  }, [setEvents]);
 
   return { ...apiState };
 };
