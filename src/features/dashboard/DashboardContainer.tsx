@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import LoginContainer from "../login/LoginContainer";
-import { useAttendanceAndEvents } from "./DashboardRequests";
+import { useEventsCall } from "../../context/eventsHook";
 import EventCard from "./components/EventCard";
 import { EventResponse } from "../../requests/eventTypes";
-import { useEventsState } from "../../context/eventsContext";
 const login = async (authenticationToken: string) => {
   await fetch("http://localhost:5000/login", {
     method: "GET",
@@ -28,9 +27,7 @@ const DashboardContainer = ({ auth }: any) => {
     }
   }, []);
 
-  const { isLoading, events } = useAttendanceAndEvents();
-  const { setEvents } = useEventsState();
-  setEvents(events);
+  const { isLoading, events } = useEventsCall();
 
   if (isLoading) return <div>Loading...</div>;
   return (

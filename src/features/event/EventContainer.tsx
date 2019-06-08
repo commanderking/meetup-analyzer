@@ -3,6 +3,7 @@ import { useEventsState } from "../../context/eventsContext";
 import { getAttendanceForEvents } from "../../requests/attendanceRequest";
 import { SingleMeetupSummary } from "../singleMeetingAnalysis/SingleMeetupSummary";
 import moment from "moment";
+import { useEventsCall } from "../../context/eventsHook";
 type Props = {
   match: any;
 };
@@ -13,23 +14,22 @@ const getAttendance = async (eventId: string, setAttendance: any) => {
 };
 
 const EventContainer = ({ match }: Props) => {
-  const { events } = useEventsState();
   const [attendance, setAttendance] = useState([]);
+  const { isLoading } = useEventsCall();
+
+  const { events } = useEventsState();
+  const event = events.find(event => (event.id = match.params.id));
+
   useEffect(() => {
-    const event = events.find(event => (event.id = match.params.id));
-    console.log("event", event);
     if (event) {
       getAttendance(event.id, setAttendance);
     }
-  }, []);
+  }, [events]);
 
-  const event = events.find(event => (event.id = match.params.id));
-
-  console.log("attendance", attendance);
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div>
-      Event {match.params.id}
       <SingleMeetupSummary
         attendees={attendance}
         eventName={event.name || ""}
