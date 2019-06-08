@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { getEvents } from "../../requests/eventRequest";
-import { getAttendanceForEvents } from "../../requests/attendanceRequest";
+import { getEvents } from "../requests/eventRequest";
+import { useEventsState } from "../context/eventsContext";
+import { EventResponse } from "../requests/eventTypes";
 
 type ApiState = {
   isLoading: boolean;
   hasError: boolean;
   errorMessage: string;
-  events: Array<any>;
+  events: EventResponse[];
 };
 
-const getEventsAndAttendanceForEvents = async (setApiState: any) => {
+const loadEvents = async (setApiState: any, setEvents: any) => {
   setApiState((prevState: ApiState) => ({
     ...prevState,
     isLoading: true
@@ -17,14 +18,11 @@ const getEventsAndAttendanceForEvents = async (setApiState: any) => {
 
   try {
     const events = await getEvents();
-    // @ts-ignore fix this once event type clear
-    const eventIds = events.map(event => event.id);
-    // const attendance = await getAttendanceForEvents(eventIds);
+    setEvents(events);
     setApiState((prevState: ApiState) => ({
       ...prevState,
       isLoading: false,
       events
-      // attendance
     }));
   } catch (err) {
     setApiState((prevState: ApiState) => ({
@@ -37,15 +35,17 @@ const getEventsAndAttendanceForEvents = async (setApiState: any) => {
   }
 };
 
-export const useAttendanceAndEvents = () => {
+export const useEventsCall = () => {
   const [apiState, setApiState] = useState({
-    isLoading: false,
+    isLoading: true,
     hasError: false,
     errorMessage: "",
     events: []
   });
+
+  const { setEvents } = useEventsState();
   useEffect(() => {
-    getEventsAndAttendanceForEvents(setApiState);
+    loadEvents(setApiState, setEvents);
   }, []);
 
   return { ...apiState };
