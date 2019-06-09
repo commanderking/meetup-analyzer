@@ -200,11 +200,13 @@ export const getSummaryData = (attendees: AttendeeData[]) => {
   );
 };
 
-export const getFirstDateAttendeeSignedUp = (attendees: AttendeeData[]) => {
+const getFirstDateAttendeeSignedUp = (attendees: AttendeeData[]) => {
   return attendees.reduce((earliestDate: any, attendee: AttendeeData) => {
-    return attendee.rsvpDate && moment(attendee.rsvpDate) < earliestDate
-      ? moment(attendee.rsvpDate)
-      : earliestDate;
+    const momentStartDate =
+      attendee.rsvpDate && moment(attendee.rsvpDate) < earliestDate
+        ? moment(attendee.rsvpDate).startOf("day")
+        : earliestDate;
+    return momentStartDate;
   }, moment());
 };
 
@@ -244,29 +246,24 @@ export const getSignupsPerDay = (
   eventDate: string
 ) => {
   const firstDate = getFirstDateAttendeeSignedUp(attendees);
-  const difference =
-    moment()
-      .range(firstDate, new Date(eventDate))
-      .diff("days") + 1;
-
-  console.log("difference", difference);
+  const difference = moment()
+    .range(firstDate.startOf("day"), moment(eventDate).startOf("day"))
+    .diff("days");
 
   const attendeesWhoRSVPd = attendees.filter(attendee => attendee.didRSVP);
 
-  console.log("attendeesWhoRSVPd", attendeesWhoRSVPd);
   const initialSignups = createInitialSignups(difference, firstDate);
 
   return attendeesWhoRSVPd.reduce((acc: any, attendee: AttendeeData) => {
     const signupDate =
-      (attendee.rsvpDate && moment(attendee.rsvpDate)) ||
-      moment(new Date(eventDate));
+      (attendee.rsvpDate && moment(attendee.rsvpDate)) || moment(eventDate);
 
-    const daysAfterFirstDay =
-      moment()
-        .range(firstDate, signupDate)
-        .diff("days") + 1;
-    console.log("signupDate", signupDate);
-    console.log("daysAfterFirstDay", daysAfterFirstDay);
+    const daysAfterFirstDay = moment()
+      .range(
+        moment(firstDate).startOf("day"),
+        moment(signupDate).startOf("day")
+      )
+      .diff("days");
 
     return {
       ...acc,

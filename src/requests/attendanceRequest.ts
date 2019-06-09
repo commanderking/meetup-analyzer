@@ -1,7 +1,7 @@
 const BACKEND_BASE_URL = "localhost:5000";
 const ATTENDANCE_ENDPOINT = `http://${BACKEND_BASE_URL}/attendance`;
 
-export const getAttendanceForEvents = async (eventIds: string[]) => {
+export const getAttendanceForEvents = async (eventIds: number[]) => {
   try {
     const data = await fetch(ATTENDANCE_ENDPOINT, {
       method: "POST",

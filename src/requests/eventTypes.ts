@@ -6,7 +6,7 @@ export type EventData = {
 
 // Data coming back from eventRequest is shaped into the following form:
 export type EventResponse = {
-  id: string;
+  id: number;
   name: string;
   date: string;
   attendees: number;

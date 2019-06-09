@@ -4,11 +4,13 @@ import { getAttendanceForEvents } from "../../requests/attendanceRequest";
 import { SingleMeetupSummary } from "../singleMeetingAnalysis/SingleMeetupSummary";
 import moment from "moment";
 import { useEventsCall } from "../../context/eventsHook";
+import DetailsTabs from "features/singleMeetingAnalysis/components/DetailsTabs";
+
 type Props = {
   match: any;
 };
 
-const getAttendance = async (eventId: string, setAttendance: any) => {
+const getAttendance = async (eventId: number, setAttendance: any) => {
   const attendance = await getAttendanceForEvents([eventId]);
   await setAttendance(attendance);
 };
@@ -18,9 +20,7 @@ const EventContainer = ({ match }: Props) => {
   const { isLoading } = useEventsCall();
 
   const { events } = useEventsState();
-  console.log("events", events);
-  const event = events.find(event => (event.id = match.params.id));
-
+  const event = events.find(event => event.id === parseInt(match.params.id));
   useEffect(() => {
     if (event) {
       getAttendance(event.id, setAttendance);
@@ -29,13 +29,16 @@ const EventContainer = ({ match }: Props) => {
 
   if (isLoading) return <div>Loading...</div>;
   if (!event) return <div>No event found</div>;
+
+  const eventDateFormatted = moment.utc(event.date).format("MM/DD/YY");
   return (
     <div>
       <SingleMeetupSummary
         attendees={attendance}
         eventName={event.name}
-        eventDate={moment(event.date).format("MM/DD/YY")}
+        eventDate={eventDateFormatted}
       />
+      <DetailsTabs attendees={attendance} eventDate={eventDateFormatted} />
     </div>
   );
 };

@@ -20,7 +20,6 @@ const SignupSummary = ({
   attendees: AttendeeData[];
   eventDate: string;
 }) => {
-  console.log("react", React);
   const [signupView, setShowSignupView] = useState(SignupViews.ACCUMULATED);
 
   const signupDataAccumulated = getSignupsAccumulated(attendees, eventDate);
