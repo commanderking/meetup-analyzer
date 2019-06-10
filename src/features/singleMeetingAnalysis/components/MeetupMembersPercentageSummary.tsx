@@ -1,20 +1,17 @@
 import React from "react";
 import { RelativeMeetupRegistrationDates } from "../SingleMeetupTypes";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
+import PercentageProgressBar from "./PercentageProgressBar";
 type Props = {
   meetupMembersWhoAttended: RelativeMeetupRegistrationDates;
   meetupMembersWhoRSVPd: RelativeMeetupRegistrationDates;
 };
-/** @jsx jsx */
-import { css, jsx } from "@emotion/core";
-
-const calculatePercentage = (numerator: number, denominator: number) =>
-  `${Math.round((numerator / denominator) * 100)}%`;
 
 const MeetupMembersPercentageSummary = ({
   meetupMembersWhoAttended,
   meetupMembersWhoRSVPd
 }: Props) => {
-  console.log("react", React);
   return (
     <div>
       <h3>% of RSVPs who Attended By Meetup Sign Up Date</h3>
@@ -22,44 +19,34 @@ const MeetupMembersPercentageSummary = ({
         id="AttendeePercentagesByMeetupRegistrationDate"
         css={css`
           display: grid;
-          grid-template-columns: 3fr 1fr;
+          grid-template-columns: 2fr 3fr;
         `}
       >
-        <div>Past Thirty Days</div>
-        <div>
-          {calculatePercentage(
-            meetupMembersWhoAttended.pastThirtyDays,
-            meetupMembersWhoRSVPd.pastThirtyDays
-          )}
-        </div>
-        <div>Past Six Months</div>
-        <div>
-          {calculatePercentage(
-            meetupMembersWhoAttended.pastSixMonths,
-            meetupMembersWhoRSVPd.pastSixMonths
-          )}
-        </div>
-        <div>Past Year</div>
-        <div>
-          {calculatePercentage(
-            meetupMembersWhoAttended.pastYear,
-            meetupMembersWhoRSVPd.pastYear
-          )}
-        </div>
-        <div>Past Two Years</div>
-        <div>
-          {calculatePercentage(
-            meetupMembersWhoAttended.pastTwoYears,
-            meetupMembersWhoRSVPd.pastTwoYears
-          )}
-        </div>
-        <div>More than 2 years</div>
-        <div>
-          {calculatePercentage(
-            meetupMembersWhoAttended.overTwoYearsAgo,
-            meetupMembersWhoRSVPd.overTwoYearsAgo
-          )}
-        </div>
+        <PercentageProgressBar
+          text="Past Thirty Days"
+          numerator={meetupMembersWhoAttended.pastThirtyDays}
+          denominator={meetupMembersWhoRSVPd.pastThirtyDays}
+        />
+        <PercentageProgressBar
+          text="Past Six Months"
+          numerator={meetupMembersWhoAttended.pastSixMonths}
+          denominator={meetupMembersWhoRSVPd.pastSixMonths}
+        />
+        <PercentageProgressBar
+          text="Past Year"
+          numerator={meetupMembersWhoAttended.pastYear}
+          denominator={meetupMembersWhoRSVPd.pastYear}
+        />
+        <PercentageProgressBar
+          text="Past Two Years"
+          numerator={meetupMembersWhoAttended.pastTwoYears}
+          denominator={meetupMembersWhoRSVPd.pastTwoYears}
+        />
+        <PercentageProgressBar
+          text="More than 2 years"
+          numerator={meetupMembersWhoAttended.overTwoYearsAgo}
+          denominator={meetupMembersWhoRSVPd.overTwoYearsAgo}
+        />
       </div>
     </div>
   );

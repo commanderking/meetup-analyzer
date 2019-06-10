@@ -6,7 +6,7 @@ import {
   getMeetupMembersWhoRSVPd
 } from "../SingleMeetingAnalysisUtils";
 import { ButtonGroup, Button } from "reactstrap";
-
+import MeetupMembersPercentageSummary from "features/singleMeetingAnalysis/components/MeetupMembersPercentageSummary";
 type Props = {
   attendees: AttendeeData[];
   eventDate: string;
@@ -31,7 +31,37 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
 
   return (
     <div>
-      <ButtonGroup>
+      {meetupMemberType === MeetupMembers.ATTENDEES && (
+        <div>
+          <MeetupMembersPercentageSummary
+            meetupMembersWhoAttended={meetupMembersWhoAttended}
+            meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
+          />
+        </div>
+      )}
+      {meetupMemberType === MeetupMembers.RSVPERS && (
+        <div>
+          <MeetupMembersPercentageSummary
+            meetupMembersWhoAttended={meetupMembersWhoAttended}
+            meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+/*
+          <MeetupMembersChart
+            title="Attendees Joined This Meetup Within..."
+            attendeesByDate={meetupMembersWhoAttended}
+          />
+                    <MeetupMembersChart
+            title="RSVPers Joined This Meetup Within..."
+            attendeesByDate={meetupMembersWhoRSVPd}
+          />
+
+                <ButtonGroup>
         <Button
           size="sm"
           color={
@@ -55,28 +85,6 @@ const MeetupMembersSummary = ({ attendees, eventDate }: Props) => {
           RSVPers
         </Button>
       </ButtonGroup>
-
-      {meetupMemberType === MeetupMembers.ATTENDEES && (
-        <MeetupMembersChart
-          title="Attendees Joined This Meetup Within..."
-          attendeesByDate={meetupMembersWhoAttended}
-        />
-      )}
-      {meetupMemberType === MeetupMembers.RSVPERS && (
-        <MeetupMembersChart
-          title="RSVPers Joined This Meetup Within..."
-          attendeesByDate={meetupMembersWhoRSVPd}
-        />
-      )}
-    </div>
-  );
-};
-
-/*
-      <MeetupMembersPercentageSummary
-        meetupMembersWhoAttended={meetupMembersWhoAttended}
-        meetupMembersWhoRSVPd={meetupMembersWhoRSVPd}
-      />
       */
 
 export default MeetupMembersSummary;

@@ -234,7 +234,8 @@ const createInitialSignups = (days: number, firstDate: any) => {
       rawDate: dateOfSignup,
       count: 0,
       dayOfWeek,
-      displayDate
+      displayDate,
+      attendees: []
     };
   });
 
@@ -269,7 +270,8 @@ export const getSignupsPerDay = (
       ...acc,
       [daysAfterFirstDay]: {
         ...acc[daysAfterFirstDay],
-        count: acc[daysAfterFirstDay].count + 1
+        count: acc[daysAfterFirstDay].count + 1,
+        attendees: [...acc[daysAfterFirstDay].attendees, attendee]
       }
     };
   }, initialSignups);
@@ -297,4 +299,129 @@ export const getSignupsAccumulated = (
     { 0: signupsPerDay["0"] }
   );
   return accumulatedSignUpsPerDay;
+};
+
+type AttendeeCountsForDate = {
+  rsvped: number;
+  attended: number;
+};
+
+type AttendanceRateBySignupDate = {
+  [key: string]: AttendeeCountsForDate;
+};
+
+export const getAttendanceRateBySignupDate = (
+  attendees: AttendeeData[],
+  eventDate: string
+): AttendanceRateBySignupDate => {
+  const signupsPerDay = getSignupsPerDay(attendees, eventDate);
+
+  return _.reduce(
+    signupsPerDay,
+    (days, value, key) => {
+      const attendees = value.attendees;
+
+      const initialCounts = {
+        rsvped: 0,
+        attended: 0
+      };
+
+      const attendeeSummaryPerDay = attendees.reduce(
+        (attendeeCounts: AttendeeCountsForDate, attendee: AttendeeData) => {
+          return {
+            ...attendeeCounts,
+            rsvped: attendeeCounts.rsvped + 1,
+            attended: attendee.didAttend
+              ? attendeeCounts.attended + 1
+              : attendeeCounts.attended
+          };
+        },
+        initialCounts
+      );
+
+      return {
+        ...days,
+        [key]: {
+          ...attendeeSummaryPerDay,
+          displayDate: value.displayDate
+        }
+      };
+    },
+    {}
+  );
+};
+
+type DateRange =
+  | "FIRST_DAY"
+  | "SECOND_DAY"
+  | "THIRD_DAY"
+  | "FIRST_WEEK"
+  | "LAST_WEEK"
+  | "LAST_DAY"
+  | "SECOND_LAST_DAY"
+  | "THIRD_LAST_DAY";
+
+const sumAttendanceRates = (
+  attendance: AttendeeCountsForDate,
+  value: AttendeeCountsForDate,
+  key: string
+): AttendeeCountsForDate => ({
+  rsvped: attendance.rsvped + value.rsvped,
+  attended: attendance.attended + value.attended
+});
+
+export const getFirstWeekSignups = (
+  attendanceRateBySignupDate: AttendanceRateBySignupDate
+) => {
+  if (_.size(attendanceRateBySignupDate) < 7) {
+    return null;
+  }
+
+  const firstWeekAttendanceRate = _.filter(
+    attendanceRateBySignupDate,
+    (value, key) => {
+      const daysAfterFirstDay = parseInt(key);
+      return daysAfterFirstDay > 0 && daysAfterFirstDay < 7;
+    }
+  );
+  // @ts-ignore
+  return _.reduce(firstWeekAttendanceRate, sumAttendanceRates, {
+    rsvped: 0,
+    attended: 0
+  });
+};
+
+export const getLastWeekSignups = (
+  attendanceRateBySignupDate: AttendanceRateBySignupDate
+) => {
+  const totalDays = _.size(attendanceRateBySignupDate);
+  if (totalDays < 7) {
+    return null;
+  }
+
+  const lastDay = totalDays - 1;
+
+  const firstWeekAttendanceRate = _.filter(
+    attendanceRateBySignupDate,
+    (value, key) => {
+      const daysAfterFirstDay = parseInt(key);
+      return daysAfterFirstDay > lastDay - 7;
+    }
+  );
+  // @ts-ignore
+  return _.reduce(firstWeekAttendanceRate, sumAttendanceRates, {
+    rsvped: 0,
+    attended: 0
+  });
+};
+
+const getAttendanceRateByKeySignupWindows = (
+  attendanceRateBySignupDate: AttendanceRateBySignupDate,
+  dateRange: DateRange
+) => {
+  // For now, assume every event is announced for at least 1 week
+
+  const lastDay = _.size(attendanceRateBySignupDate);
+
+  const firstDayRate = attendanceRateBySignupDate[lastDay];
 };
