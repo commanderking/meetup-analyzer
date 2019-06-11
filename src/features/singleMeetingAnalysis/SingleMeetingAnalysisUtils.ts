@@ -350,21 +350,9 @@ export const getAttendanceRateBySignupDate = (
     {}
   );
 };
-
-type DateRange =
-  | "FIRST_DAY"
-  | "SECOND_DAY"
-  | "THIRD_DAY"
-  | "FIRST_WEEK"
-  | "LAST_WEEK"
-  | "LAST_DAY"
-  | "SECOND_LAST_DAY"
-  | "THIRD_LAST_DAY";
-
 const sumAttendanceRates = (
   attendance: AttendeeCountsForDate,
-  value: AttendeeCountsForDate,
-  key: string
+  value: AttendeeCountsForDate
 ): AttendeeCountsForDate => ({
   rsvped: attendance.rsvped + value.rsvped,
   attended: attendance.attended + value.attended
@@ -413,15 +401,4 @@ export const getLastWeekSignups = (
     rsvped: 0,
     attended: 0
   });
-};
-
-const getAttendanceRateByKeySignupWindows = (
-  attendanceRateBySignupDate: AttendanceRateBySignupDate,
-  dateRange: DateRange
-) => {
-  // For now, assume every event is announced for at least 1 week
-
-  const lastDay = _.size(attendanceRateBySignupDate);
-
-  const firstDayRate = attendanceRateBySignupDate[lastDay];
 };

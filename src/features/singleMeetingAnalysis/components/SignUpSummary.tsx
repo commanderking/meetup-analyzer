@@ -25,7 +25,6 @@ const SignupSummary = ({
   const signupDataAccumulated = getSignupsAccumulated(attendees, eventDate);
   const signupDataDaily = getSignupsPerDay(attendees, eventDate);
 
-  console.log("signupDateDaily", signupDataDaily);
   return (
     <div>
       <h3>Signups Over Time</h3>
