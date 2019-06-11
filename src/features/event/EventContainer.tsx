@@ -5,7 +5,7 @@ import { SingleMeetupSummary } from "../singleMeetingAnalysis/SingleMeetupSummar
 import moment from "moment";
 import { useEventsCall } from "../../context/eventsHook";
 import DetailsTabs from "features/singleMeetingAnalysis/components/DetailsTabs";
-
+import AttendanceBySignupDate from "features/singleMeetingAnalysis/components/AttendanceBySignupDate";
 type Props = {
   match: any;
 };
@@ -39,6 +39,10 @@ const EventContainer = ({ match }: Props) => {
         eventDate={eventDateFormatted}
       />
       <DetailsTabs attendees={attendance} eventDate={eventDateFormatted} />
+      <AttendanceBySignupDate
+        attendees={attendance}
+        eventDate={eventDateFormatted}
+      />
     </div>
   );
 };
