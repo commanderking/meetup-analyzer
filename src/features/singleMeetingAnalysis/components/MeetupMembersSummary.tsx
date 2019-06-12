@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import MeetupMembersChart from "./MeetupMembersChart";
 import { AttendeeData } from "../SingleMeetupTypes";
 import {
   getMeetupMembersWhoAttendedSummary,
   getMeetupMembersWhoRSVPd
 } from "../SingleMeetingAnalysisUtils";
-import { ButtonGroup, Button } from "reactstrap";
 import MeetupMembersPercentageSummary from "features/singleMeetingAnalysis/components/MeetupMembersPercentageSummary";
 type Props = {
   attendees: AttendeeData[];

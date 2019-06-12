@@ -5,7 +5,10 @@ import _ from "lodash";
 import {
   RawAttendeeData,
   AttendeeData,
-  RelativeMeetupRegistrationDates
+  RelativeMeetupRegistrationDates,
+  AttendeeCountsForDate,
+  AttendanceRateBySignupDate,
+  AttendanceBySignupDateForTable
 } from "./SingleMeetupTypes";
 
 // @ts-ignore
@@ -301,15 +304,6 @@ export const getSignupsAccumulated = (
   return accumulatedSignUpsPerDay;
 };
 
-type AttendeeCountsForDate = {
-  rsvped: number;
-  attended: number;
-};
-
-type AttendanceRateBySignupDate = {
-  [key: string]: AttendeeCountsForDate;
-};
-
 export const getAttendanceRateBySignupDate = (
   attendees: AttendeeData[],
   eventDate: string
@@ -401,4 +395,17 @@ export const getLastWeekSignups = (
     rsvped: 0,
     attended: 0
   });
+};
+
+export const getAttendeesBySignupDateTable = (
+  attendanceRateBySignupDate: AttendanceRateBySignupDate
+): AttendanceBySignupDateForTable[] => {
+  return _.map(attendanceRateBySignupDate, date => {
+    return {
+      ...date,
+      percent: Math.round((date.attended / date.rsvped) * 100)
+    };
+  })
+    .filter(date => date.rsvped >= 5)
+    .sort();
 };

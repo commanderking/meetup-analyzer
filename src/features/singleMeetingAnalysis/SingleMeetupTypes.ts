@@ -29,3 +29,16 @@ export type RelativeMeetupRegistrationDates = {
   pastTwoYears: number;
   overTwoYearsAgo: number;
 };
+
+export type AttendeeCountsForDate = {
+  rsvped: number;
+  attended: number;
+};
+
+export type AttendanceRateBySignupDate = {
+  [key: string]: AttendeeCountsForDate;
+};
+
+export type AttendanceBySignupDateForTable = AttendeeCountsForDate & {
+  percent: number;
+};
