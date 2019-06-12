@@ -2,13 +2,15 @@ import React from "react";
 import {
   getAttendanceRateBySignupDate,
   getFirstWeekSignups,
-  getLastWeekSignups
+  getLastWeekSignups,
+  getAttendeesBySignupDateTable
 } from "features/singleMeetingAnalysis/SingleMeetingAnalysisUtils";
 import { AttendeeData } from "features/singleMeetingAnalysis/SingleMeetupTypes";
 import PercentageProgressBar from "./PercentageProgressBar";
 import _ from "lodash";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import AttendanceBySignupDateTable from "./AttendanceBySignupDateTable";
 
 type Props = {
   attendees: AttendeeData[];
@@ -24,6 +26,8 @@ const AttendanceBySignupDate = ({ attendees, eventDate }: Props) => {
 
   const firstWeek = getFirstWeekSignups(rateByDate);
   const lastWeek = getLastWeekSignups(rateByDate);
+
+  const tableData = getAttendeesBySignupDateTable(rateByDate);
   return (
     <div
       css={css`
@@ -40,6 +44,7 @@ const AttendanceBySignupDate = ({ attendees, eventDate }: Props) => {
         css={css`
           display: grid;
           grid-template-columns: 2fr 3fr;
+          margin-bottom: 50px;
         `}
       >
         {!_.isEmpty(rateByDate) && (
@@ -74,6 +79,12 @@ const AttendanceBySignupDate = ({ attendees, eventDate }: Props) => {
             />
           </React.Fragment>
         )}
+      </div>
+      <div>
+        <h4>Dates with More than 5 RSVPs</h4>
+        <div>
+          <AttendanceBySignupDateTable data={tableData} />
+        </div>
       </div>
     </div>
   );
