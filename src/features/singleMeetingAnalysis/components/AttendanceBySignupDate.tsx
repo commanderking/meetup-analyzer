@@ -18,8 +18,6 @@ type Props = {
 };
 const AttendanceBySignupDate = ({ attendees, eventDate }: Props) => {
   const rateByDate = getAttendanceRateBySignupDate(attendees, eventDate);
-  console.log("attendanceRateByDate", rateByDate);
-  console.log(!_.isEmpty(rateByDate));
   const lastDay = _.size(rateByDate) - 1;
   const lastDayKey = lastDay.toString();
   const secondLastDayKey = (lastDay - 1).toString();
