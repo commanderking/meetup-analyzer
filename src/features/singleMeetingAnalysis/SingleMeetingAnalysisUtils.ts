@@ -42,6 +42,15 @@ export const bindRawMeetupData = (
   });
 };
 
+export const getMeetupUserIds = (meetupData: AttendeeData[]): string[] => {
+  // @ts-ignore
+  return meetupData
+    .map((attendee: AttendeeData) => {
+      return attendee && attendee.userId;
+    })
+    .filter(Boolean);
+};
+
 const registeredWithin30DaysOfEvent = (
   dateJoined: Date,
   eventDate: Date

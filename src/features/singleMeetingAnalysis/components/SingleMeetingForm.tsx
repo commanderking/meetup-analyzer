@@ -31,10 +31,12 @@ const SingleMeetingForm = ({
   };
 
   const submitJSON = (event: any) => {
+    console.log("event", event);
     event.preventDefault();
     csv()
       .fromString(rawMeetupData)
       .then(result => {
+        console.log("result", result);
         const bindedData = bindRawMeetupData(result);
         setAttendees(bindedData);
       });
