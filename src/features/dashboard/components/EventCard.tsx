@@ -23,6 +23,7 @@ const EventCard = ({ event }: Props) => {
           border: none;
           padding 0;
           height: 100%;
+          width: 100%;
         }
       `}
       >
