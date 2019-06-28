@@ -53,9 +53,13 @@ export const getPredictedShowRate = (
   );
   const regulars = attendanceHistory.memberAttendanceHistory.length;
   const firstTimers = attendeeIds.length - regulars;
+
+  console.log("regulars", regulars);
+  console.log("attended", attended);
+  console.log("rspved", rsvped);
   const expectedAttendees =
-    (attended / rsvped) * regulars +
-    firstTimers * attendanceRateForPreviousAttendees;
+    firstTimers * (attended / rsvped) +
+    regulars * attendanceRateForPreviousAttendees;
 
   return expectedAttendees;
 };
