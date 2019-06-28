@@ -23,6 +23,7 @@ const EventCard = ({ event }: Props) => {
           border: none;
           padding 0;
           height: 100%;
+          width: 100%;
         }
       `}
       >
@@ -34,8 +35,16 @@ const EventCard = ({ event }: Props) => {
             }
           `}
         >
-          <h5>{name}</h5>
-          <CardSubtitle>{moment(date).format("MM/DD/YY")}</CardSubtitle>
+          <div
+            css={css`
+               {
+                min-height: 100px;
+              }
+            `}
+          >
+            <h5>{name}</h5>
+            <CardSubtitle>{moment(date).format("MM/DD/YY")}</CardSubtitle>
+          </div>
           <div
             css={css`
                {

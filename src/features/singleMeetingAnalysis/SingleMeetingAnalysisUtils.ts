@@ -42,6 +42,15 @@ export const bindRawMeetupData = (
   });
 };
 
+export const getMeetupUserIds = (meetupData: AttendeeData[]): string[] => {
+  // @ts-ignore - seems like I'm filtering out all null values with Boolean, but still says it can be null?
+  return meetupData
+    .map((attendee: AttendeeData) => {
+      return attendee && attendee.userId;
+    })
+    .filter(Boolean);
+};
+
 const registeredWithin30DaysOfEvent = (
   dateJoined: Date,
   eventDate: Date

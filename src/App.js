@@ -7,7 +7,7 @@ import DashboardContainer from "features/dashboard/DashboardContainer";
 import AuthCallback from "./auth/AuthCallback";
 import { EventsProvider } from "./context/eventsContext";
 import EventContainer from "./features/event/EventContainer";
-
+import AttendancePredictorContainer from "features/attendancePredictor/AttendancePredictorContainer";
 import Auth from "./auth/auth";
 import history from "./auth/history";
 
@@ -50,6 +50,10 @@ class App extends Component {
             <Route
               path="/event/:id"
               render={props => <EventContainer {...props} />}
+            />
+            <Route
+              path="/prediction"
+              render={props => <AttendancePredictorContainer {...props} />}
             />
           </EventsProvider>
         </div>
