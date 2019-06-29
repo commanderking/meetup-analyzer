@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Label, FormGroup, Input, Form, Col } from "reactstrap";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 
 const labelColumns = 3;
 const inputColumns = 9;
@@ -16,7 +18,17 @@ const AttendanceHistoryForm = ({
   submitJSON
 }: Props) => {
   return (
-    <Form>
+    <Form
+      css={css`
+         {
+          width: 700px;
+          margin: auto;
+          margin-top: 50px;
+        }
+      `}
+    >
+      <h3>Insert CSV Data for Upcoming Meetup</h3>
+
       <div>
         <FormGroup row>
           <Label sm={labelColumns}>Event Attendance Data: </Label>

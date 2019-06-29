@@ -3,59 +3,44 @@ import {
   MemberAttendanceHistory
 } from "requests/attendanceHistoryTypes";
 
-export const getFirstTimeAttendeeRate = (
-  attendanceHistory: AttendanceHistory
-) => {};
-
 type AttendanceHistoryCount = {
   attended: number;
   rsvped: number;
 };
 
-export const getAttendanceRateForMembersWithAtLeastOneMeetupAttended = (
+export const getPredictedAttendanceFromMembersWithHistory = (
   attendanceHistory: AttendanceHistory
-) => {
+): number => {
   return attendanceHistory.memberAttendanceHistory.reduce(
-    (acc: AttendanceHistoryCount, attendee: MemberAttendanceHistory) => {
-      return {
-        attended: acc.attended + attendee.attended,
-        rsvped: acc.rsvped + attendee.rsvped
-      };
+    (acc: number, attendee: MemberAttendanceHistory) => {
+      return acc + attendee.attended / attendee.rsvped;
     },
-    {
-      attended: 0,
-      rsvped: 0
-    }
+    0
   );
 };
 
-export const getAttendanceRateForPreviousAttendees = (
+export const getFirstTimeAttendeeRate = (
   attendanceHistory: AttendanceHistory
-) => {
-  const attendanceCounts = getAttendanceRateForMembersWithAtLeastOneMeetupAttended(
-    attendanceHistory
-  );
-  const { attended, rsvped } = attendanceCounts;
-  return attended / rsvped;
-};
-
-export const getPredictedShowRate = (
-  attendanceHistory: AttendanceHistory,
-  attendeeIds: string[]
 ): number => {
   const {
     attended,
     rsvped
   } = attendanceHistory.attendeeHistoryForThoseWhoAttendedOnlyOneMeetup;
 
-  const attendanceRateForPreviousAttendees = getAttendanceRateForPreviousAttendees(
-    attendanceHistory
-  );
+  return attended / rsvped;
+};
+
+export const getPredictedAttendanceCount = (
+  attendanceHistory: AttendanceHistory,
+  attendeeIds: string[]
+): number => {
+  const firstTimeAttendeeRate = getFirstTimeAttendeeRate(attendanceHistory);
+
   const regulars = attendanceHistory.memberAttendanceHistory.length;
   const firstTimers = attendeeIds.length - regulars;
 
-  return (
-    firstTimers * (attended / rsvped) +
-    regulars * attendanceRateForPreviousAttendees
+  return Math.round(
+    firstTimers * firstTimeAttendeeRate +
+      getPredictedAttendanceFromMembersWithHistory(attendanceHistory)
   );
 };

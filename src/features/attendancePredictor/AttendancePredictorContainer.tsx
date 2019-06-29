@@ -8,6 +8,7 @@ import {
 import { getAttendanceHistoryForUsers } from "requests/attendanceHistoryRequest";
 import AttendanceHistoryResults from "features/attendancePredictor/components/AttendanceHistoryResults";
 import AttendanceHistoryForm from "features/attendancePredictor/components/AttendanceHistoryForm";
+import { Collapse, Button } from "reactstrap";
 
 const loadAttendanceHistory = async (
   userIds: string[],
@@ -27,8 +28,9 @@ const AttendancePredictorContainer = () => {
     },
     memberAttendanceHistory: []
   });
-
   const [attendeeIds, setAttendeeIds]: [string[], any] = useState([]);
+
+  const [showForm, setShowForm] = useState(true);
 
   const submitJSON = (event: any) => {
     event.preventDefault();
@@ -39,24 +41,28 @@ const AttendancePredictorContainer = () => {
         const attendeeIds = getMeetupUserIds(bindedData);
         loadAttendanceHistory(attendeeIds, setAttendanceHistory);
         setAttendeeIds(attendeeIds);
+        setShowForm(false);
       });
   };
 
   return (
     <div>
-      <AttendanceHistoryForm
-        rawMeetupData={rawMeetupData}
-        setRawMeetupData={setRawMeetupData}
-        submitJSON={submitJSON}
-      />
-      <div>
-        {attendanceHistory && (
-          <AttendanceHistoryResults
-            attendanceHistory={attendanceHistory}
-            attendeeIds={attendeeIds}
-          />
-        )}
-      </div>
+      {!showForm && (
+        <Button onClick={() => setShowForm(true)}>Edit Data</Button>
+      )}
+      <Collapse isOpen={showForm}>
+        <AttendanceHistoryForm
+          rawMeetupData={rawMeetupData}
+          setRawMeetupData={setRawMeetupData}
+          submitJSON={submitJSON}
+        />
+      </Collapse>
+      {!showForm && (
+        <AttendanceHistoryResults
+          attendanceHistory={attendanceHistory}
+          attendeeIds={attendeeIds}
+        />
+      )}
     </div>
   );
 };
