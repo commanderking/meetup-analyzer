@@ -1,17 +1,13 @@
 // @flow
 import React, { useState } from "react";
-import { Button, Label, FormGroup, Input, Form, Col } from "reactstrap";
 import csv from "csvtojson";
 import {
   bindRawMeetupData,
   getMeetupUserIds
 } from "features/singleMeetingAnalysis/SingleMeetingAnalysisUtils";
-import { AttendeeData } from "features/singleMeetingAnalysis/SingleMeetupTypes";
 import { getAttendanceHistoryForUsers } from "requests/attendanceHistoryRequest";
 import AttendanceHistoryResults from "features/attendancePredictor/components/AttendanceHistoryResults";
-
-const labelColumns = 3;
-const inputColumns = 9;
+import AttendanceHistoryForm from "features/attendancePredictor/components/AttendanceHistoryForm";
 
 const loadAttendanceHistory = async (
   userIds: string[],
@@ -33,9 +29,6 @@ const AttendancePredictorContainer = () => {
   });
 
   const [attendeeIds, setAttendeeIds]: [string[], any] = useState([]);
-  const handleChange = (event: any) => {
-    setRawMeetupData(event.target.value);
-  };
 
   const submitJSON = (event: any) => {
     event.preventDefault();
@@ -46,32 +39,16 @@ const AttendancePredictorContainer = () => {
         const attendeeIds = getMeetupUserIds(bindedData);
         loadAttendanceHistory(attendeeIds, setAttendanceHistory);
         setAttendeeIds(attendeeIds);
-        console.log("attendeeIds", attendeeIds);
       });
   };
 
   return (
     <div>
-      <Form>
-        <div>
-          <FormGroup row>
-            <Label sm={labelColumns}>Event Attendance Data: </Label>
-            <Col sm={inputColumns}>
-              <Input
-                rows={10}
-                type="textarea"
-                value={rawMeetupData}
-                placeholder={"Enter csv data here..."}
-                onChange={handleChange}
-              />
-            </Col>
-          </FormGroup>
-          <div />
-        </div>
-        <Button color="success" type="submit" onClick={submitJSON}>
-          Summarize Data
-        </Button>
-      </Form>
+      <AttendanceHistoryForm
+        rawMeetupData={rawMeetupData}
+        setRawMeetupData={setRawMeetupData}
+        submitJSON={submitJSON}
+      />
       <div>
         {attendanceHistory && (
           <AttendanceHistoryResults
