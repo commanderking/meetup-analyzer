@@ -18,8 +18,8 @@ export const getAttendanceRateForMembersWithAtLeastOneMeetupAttended = (
   return attendanceHistory.memberAttendanceHistory.reduce(
     (acc: AttendanceHistoryCount, attendee: MemberAttendanceHistory) => {
       return {
-        attended: acc.attended + attendee.eventsAttendedCount,
-        rsvped: acc.rsvped + attendee.eventsRSVPedCount
+        attended: acc.attended + attendee.attended,
+        rsvped: acc.rsvped + attendee.rsvped
       };
     },
     {

@@ -1,6 +1,6 @@
 export type MemberAttendanceHistory = {
-  eventsAttendedCount: number;
-  eventsRSVPedCount: number;
+  attended: number;
+  rsvped: number;
   meetupUserId: number;
 };
 
