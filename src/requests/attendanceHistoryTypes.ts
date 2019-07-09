@@ -5,7 +5,7 @@ export type MemberAttendanceHistory = {
 };
 
 export type AttendanceHistory = {
-  attendeeHistoryForThoseWhoAttendedOnlyOneMeetup: {
+  singleAttendanceCountAndRSVPs: {
     attended: number;
     rsvped: number;
   };

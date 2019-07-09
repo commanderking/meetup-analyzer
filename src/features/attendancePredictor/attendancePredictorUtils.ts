@@ -22,10 +22,7 @@ export const getPredictedAttendanceFromMembersWithHistory = (
 export const getFirstTimeAttendeeRate = (
   attendanceHistory: AttendanceHistory
 ): number => {
-  const {
-    attended,
-    rsvped
-  } = attendanceHistory.attendeeHistoryForThoseWhoAttendedOnlyOneMeetup;
+  const { attended, rsvped } = attendanceHistory.singleAttendanceCountAndRSVPs;
 
   return attended / rsvped;
 };

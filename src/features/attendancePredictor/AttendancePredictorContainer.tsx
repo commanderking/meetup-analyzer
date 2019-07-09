@@ -22,7 +22,7 @@ const loadAttendanceHistory = async (
 const AttendancePredictorContainer = () => {
   const [rawMeetupData, setRawMeetupData] = useState("");
   const [attendanceHistory, setAttendanceHistory]: [any, any] = useState({
-    attendeeHistoryForThoseWhoAttendedOnlyOneMeetup: {
+    singleAttendanceCountAndRSVPs: {
       attended: 0,
       rsvped: 0
     },
